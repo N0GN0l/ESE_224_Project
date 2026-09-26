@@ -3,7 +3,7 @@
 // Team members: Daniel Zhou, Ella Chen, Logan Jeong
 //
 // Every function below compiles but does nothing useful yet.
-// Replace each TODO with your implementation (see Section 3 of the handout).t2eqwf23
+// Replace each TODO with your implementation (see Section 3 of the handout)
 
 #include "Drone.h"
 #include <iostream>
