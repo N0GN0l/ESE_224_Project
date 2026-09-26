@@ -9,7 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-using namespace std;
+using std::string;
 
 // ---------- Constructors ----------
 

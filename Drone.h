@@ -6,8 +6,7 @@
 #define DRONE_H
 
 #include <string>
-using namespace std;
-
+using std::string;
 // Battery and delivery constants (Section 3.1)
 const double BATTERY_PER_UNIT = 2.0;  // battery % per grid unit with no payload
 const double PAYLOAD_FACTOR = 0.2;    // extra fraction of battery per kg

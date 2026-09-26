@@ -8,12 +8,12 @@
 #include "Drone.h"
 #include <string>
 #include <vector>
-using namespace std;
+using std::string;
 
 class Fleet
 {
 private:
-    vector<Drone> drones;
+    std::vector<Drone> drones;
 
     // Provided random number generator (Section 4.5)
     unsigned long long nextRandom(unsigned long long &state) const;

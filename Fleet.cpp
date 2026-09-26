@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-using namespace std;
+using std::string;
 
 // ---------- Private helpers ----------
 

@@ -10,7 +10,8 @@
 #include <fstream>
 #include <string>
 #include <limits>
-using namespace std;
+using std::string;
+using std::endl;
 
 // TODO: ask for a username and password until the pair appears in users.txt,
 //       then greet the user by name.
@@ -26,7 +27,7 @@ void loadFleet(Fleet& fleet, const string& filename)
 
 void showMenu()
 {
-    cout << endl
+    std::cout << endl
          << "===== SkyDrop Menu =====" << endl
          << " 1. Display all drones" << endl
          << " 2. Sort by ID" << endl
@@ -56,8 +57,8 @@ int main()
     while (choice != 0)
     {
         showMenu();
-        cout << "Choose an option: ";
-        cin >> choice;
+        std::cout << "Choose an option: ";
+        std::cin >> choice;
         // TODO: if the user types a letter, cin fails. Recover (cin.clear and
         //       cin.ignore from <limits>) instead of crashing or looping forever.
 
@@ -68,10 +69,10 @@ int main()
             break;
         // TODO: cases 2 to 14 (table in Section 5)
         case 0:
-            cout << "Goodbye!" << endl;
+            std::cout << "Goodbye!" << endl;
             break;
         default:
-            cout << "Invalid option." << endl;
+            std::cout << "Invalid option." << endl;
         }
     }
     return 0;
