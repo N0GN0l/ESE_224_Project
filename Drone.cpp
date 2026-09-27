@@ -29,7 +29,14 @@ Drone::Drone()
 Drone::Drone(const string& n, int id, const string& m, double b, double p,
              int x, int y, const string& s) : Drone()
 {
-    // TODO: set each member by calling its mutator, so invalid values keep the default
+    setName(n);
+    setID(id);
+    setModel(m);
+    setBattery(b);
+    setMaxPayload(p);
+    setPosition(0, x);
+    setPosition(1, y);
+    setStatus(s);
 }
 
 // ---------- Accessors ----------
