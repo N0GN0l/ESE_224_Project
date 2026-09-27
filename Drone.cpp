@@ -16,7 +16,9 @@ using std::string;
 Drone::Drone()
 {
     // TODO: set every member to its default value (table in Section 3.2)
+    name = "";
     ID = -1;
+    model = "";
     battery = 100.0;
     maxPayload = 0.0;
     position[0] = 0;
