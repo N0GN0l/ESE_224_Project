@@ -6,6 +6,7 @@
 // Replace each TODO with your implementation (see Section 3 of the handout)
 
 #include "Drone.h"
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -72,6 +73,11 @@ void Drone::setName(const string& n)
 bool Drone::setID(int id)
 {
     // TODO: valid when id > 0
+    if(id > 0)
+    {
+        this->ID = id;
+        return true;
+    }
     return false;
 }
 
