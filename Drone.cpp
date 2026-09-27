@@ -141,18 +141,37 @@ bool Drone::setBattery(double b)
 bool Drone::setMaxPayload(double p)
 {
     // TODO: valid when p > 0
+    if(p > 0)
+    {
+        this->maxPayload = p;
+        return true;
+    }
     return false;
 }
 
 bool Drone::setPosition(int index, int value)
 {
     // TODO: valid when index is 0 or 1 and value >= 0
+    if(index == 0 || index == 1)
+    {
+        if(value >= 0)
+        {
+            this->position[index] = value;
+            return true;
+        }
+    }
     return false;
 }
 
 bool Drone::setStatus(const string& s)
 {
     // TODO: valid when s is "IDLE", "CHARGING", or "MAINTENANCE"
+    make_entire_string_upper(s);
+    if(s == "IDLE" || s == "CHARGING" || s == "MAINTENANCE")
+    {
+        this->status = s;
+        return true;
+    }
     return false;
 }
 
