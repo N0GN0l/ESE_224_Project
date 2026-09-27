@@ -28,7 +28,7 @@ private:
 public:
     // Constructors
     Drone();
-    Drone(const string& n, int id, const string& m, double b, double p,
+    Drone(const string& n, int id, string& m, double b, double p,
           int x, int y, const string& s);
 
     // Accessors
@@ -44,7 +44,7 @@ public:
     // Mutators: print an error, leave the member unchanged, and return false if invalid
     void setName(const string& n);
     bool setID(int id);
-    bool setModel(const string& m);
+    bool setModel(string& m);
     bool setBattery(double b);
     bool setMaxPayload(double p);
     bool setPosition(int index, int value);

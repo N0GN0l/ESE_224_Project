@@ -61,7 +61,7 @@ Drone::Drone()
     deliveriesCompleted = 0;
 }
 
-Drone::Drone(const string& n, int id, const string& m, double b, double p,
+Drone::Drone(const string& n, int id, string& m, double b, double p,
              int x, int y, const string& s) : Drone()
 {
     setName(n);
@@ -115,12 +115,13 @@ bool Drone::setID(int id)
     return false;
 }
 
-bool Drone::setModel(const string& m)
+bool Drone::setModel(string& m)
 {
     // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
     make_entire_string_lower(m);
     if(m == "kestral" || m == "falcon" || m == "condor")
     {
+        to_upper_inplace(m[0]);
         this->model = m;
         return true;
     }
