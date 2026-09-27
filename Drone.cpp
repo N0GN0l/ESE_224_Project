@@ -118,6 +118,12 @@ bool Drone::setID(int id)
 bool Drone::setModel(const string& m)
 {
     // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
+    make_entire_string_lower(m);
+    if(m == "kestral" || m == "falcon" || m == "condor")
+    {
+        this->model = m;
+        return true;
+    }
     return false;
 }
 
