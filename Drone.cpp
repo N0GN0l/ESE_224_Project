@@ -130,6 +130,11 @@ bool Drone::setModel(const string& m)
 bool Drone::setBattery(double b)
 {
     // TODO: valid when 0 <= b <= 100
+    if(b >= 0 && b <= 100)
+    {
+        this->battery = b;
+        return true;
+    }
     return false;
 }
 
