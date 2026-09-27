@@ -7,6 +7,7 @@
 
 #include "Drone.h"
 #include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -23,9 +24,24 @@ void to_upper_inplace(char& c)
     c = to_upper(c);
 }
 
-void make_entire_string_lower(const string& word)
+void make_entire_string_upper(const string& word)
 {
     std::transform(word.cbegin(), word.cend(), word.begin(), to_upper);
+}
+
+char to_lower(unsigned char c)
+{
+    return std::tolower(c);
+}
+
+void to_lower_inplace(char& c)
+{
+    c = to_lower(c);
+}
+
+void make_entire_string_lower(const string& word)
+{
+    std::transform(word.cbegin(), word.cend(), word.begin(), to_lower);
 }
 
 
@@ -102,11 +118,6 @@ bool Drone::setID(int id)
 bool Drone::setModel(const string& m)
 {
     // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
-    if(m == "kestral" || m == "falcon" || m == "condor")
-    {
-        this->model = m;
-        return true;
-    }
     return false;
 }
 
