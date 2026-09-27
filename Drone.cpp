@@ -12,6 +12,24 @@
 #include <cmath>
 using std::string;
 
+// ------------- String helper methods ----------------------
+char to_upper(unsigned char c)
+{
+    return std::toupper(c);
+}
+
+void to_upper_inplace(char& c)
+{
+    c = to_upper(c);
+}
+
+void make_entire_string_lower(const string& word)
+{
+    std::transform(word.cbegin(), word.cend(), word.begin(), to_upper);
+}
+
+
+
 // ---------- Constructors ----------
 
 Drone::Drone()
@@ -84,6 +102,11 @@ bool Drone::setID(int id)
 bool Drone::setModel(const string& m)
 {
     // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
+    if(m == "kestral" || m == "falcon" || m == "condor")
+    {
+        this->model = m;
+        return true;
+    }
     return false;
 }
 
