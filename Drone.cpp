@@ -51,7 +51,14 @@ int Drone::getDeliveriesCompleted() const { return deliveriesCompleted; }
 
 int Drone::getPosition(int index) const
 {
-    // TODO: index 0 is x, index 1 is y; any other index prints an error and returns -1
+    if(index == 0)
+    {
+        return position[0];
+    }
+    else if(index == 1)
+    {
+        return position[1];
+    }
     return -1;
 }
 
