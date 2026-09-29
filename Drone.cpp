@@ -192,6 +192,7 @@ double Drone::batteryNeeded(int x, int y, double weight) const
 {
     // TODO: distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight)
     double batteryNeeded = distanceTo(x, y) * BATTERY_PER_UNIT *(1 + PAYLOAD_FACTOR * weight);
+    return batteryNeeded;
 }
 
 bool Drone::canDeliver(int x, int y, double weight) const
