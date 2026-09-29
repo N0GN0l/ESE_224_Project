@@ -181,7 +181,11 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     // TODO: straight-line distance from this drone to (x, y)
-    return 0.0;
+    double distance = 0;
+    double deltaY = (position[1]-y);
+    double deltaX = (position[0] - x);
+    distance = sqrt(pow(deltaX,2) + pow(deltaY,2));
+    return distance;    
 }
 
 double Drone::batteryNeeded(int x, int y, double weight) const
