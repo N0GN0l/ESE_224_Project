@@ -106,7 +106,6 @@ void Drone::setName(const string& n)
 
 bool Drone::setID(int id)
 {
-    // TODO: valid when id > 0
     if(id > 0)
     {
         this->ID = id;
@@ -117,7 +116,6 @@ bool Drone::setID(int id)
 
 bool Drone::setModel(string& m)
 {
-    // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
     make_entire_string_lower(m);
     if(m == "kestral" || m == "falcon" || m == "condor")
     {
@@ -130,7 +128,6 @@ bool Drone::setModel(string& m)
 
 bool Drone::setBattery(double b)
 {
-    // TODO: valid when 0 <= b <= 100
     if(b >= 0 && b <= 100)
     {
         this->battery = b;
@@ -141,7 +138,6 @@ bool Drone::setBattery(double b)
 
 bool Drone::setMaxPayload(double p)
 {
-    // TODO: valid when p > 0
     if(p > 0)
     {
         this->maxPayload = p;
@@ -152,7 +148,6 @@ bool Drone::setMaxPayload(double p)
 
 bool Drone::setPosition(int index, int value)
 {
-    // TODO: valid when index is 0 or 1 and value >= 0
     if(index == 0 || index == 1)
     {
         if(value >= 0)
@@ -166,7 +161,6 @@ bool Drone::setPosition(int index, int value)
 
 bool Drone::setStatus(const string& s)
 {
-    // TODO: valid when s is "IDLE", "CHARGING", or "MAINTENANCE"
     make_entire_string_upper(s);
     if(s == "IDLE" || s == "CHARGING" || s == "MAINTENANCE")
     {
@@ -180,7 +174,6 @@ bool Drone::setStatus(const string& s)
 
 double Drone::distanceTo(int x, int y) const
 {
-    // TODO: straight-line distance from this drone to (x, y)
     double distance = 0;
     double deltaY = (position[1]-y);
     double deltaX = (position[0] - x);
@@ -190,7 +183,6 @@ double Drone::distanceTo(int x, int y) const
 
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
-    // TODO: distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight)
     double batteryNeeded = distanceTo(x, y) * BATTERY_PER_UNIT *(1 + PAYLOAD_FACTOR * weight);
     return batteryNeeded;
 }
