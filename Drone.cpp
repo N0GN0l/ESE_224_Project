@@ -198,7 +198,17 @@ bool Drone::canDeliver(int x, int y, double weight) const
 
 void Drone::completeDelivery(int x, int y, double weight)
 {
-    // TODO: use battery, move to (x, y), count the delivery, switch to CHARGING if below LOW_BATTERY
+    if(canDeliver(x, y, weight))
+    {
+        battery -= batteryNeeded(x, y, weight);
+        position[0] = x;
+        position[1] = y;
+        deliveriesCompleted++;
+        if(battery < LOW_BATTERY)
+        {
+            setStatus("CHARGING");
+        }
+    }
 }
 
 // ---------- Display and comparison ----------
