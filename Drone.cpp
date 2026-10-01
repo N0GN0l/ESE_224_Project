@@ -189,7 +189,10 @@ double Drone::batteryNeeded(int x, int y, double weight) const
 
 bool Drone::canDeliver(int x, int y, double weight) const
 {
-    // TODO: IDLE, weight <= maxPayload, and enough battery to keep SAFETY_RESERVE
+    if(status == "IDLE" && weight <= maxPayload && battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE)
+    {
+        return true;
+    }
     return false;
 }
 
