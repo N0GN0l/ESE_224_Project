@@ -209,6 +209,10 @@ void Drone::completeDelivery(int x, int y, double weight)
             setStatus("CHARGING");
         }
     }
+    else
+    {
+        std::cout<<"Drone cannot complete the delivery"<<std::endl;
+    }
 }
 
 // ---------- Display and comparison ----------
