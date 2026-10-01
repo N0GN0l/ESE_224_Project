@@ -11,7 +11,6 @@
 #include <fstream>
 #include <iomanip>
 using std::string;
-//testing testing testing
 
 // ---------- Private helpers ----------
 
