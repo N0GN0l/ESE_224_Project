@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include "myDouble.h"
 using std::string;
 
 // ------------- String helper methods ----------------------
@@ -175,9 +176,9 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     double distance = 0;
-    double deltaY = (position[1]-y);
-    double deltaX = (position[0] - x);
-    distance = sqrt(pow(deltaX,2) + pow(deltaY,2));
+    myDouble deltaY = (position[1]-y);
+    myDouble deltaX = (position[0] - x);
+    distance = sqrt((deltaX^2) + (deltaY^2));
     return distance;    
 }
 
