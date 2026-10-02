@@ -1,3 +1,3 @@
 # ESE_224_Project
 
-**All communication done here?**
+**Logan: ** Hey guys, I'm really excited to work with all of you!
