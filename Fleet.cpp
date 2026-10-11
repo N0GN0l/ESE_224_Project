@@ -56,7 +56,20 @@ int Fleet::getSize() const
 
 void Fleet::selectionSortByID()
 {
-    // TODO: ascending by ID. Print: Selection sort by ID: C comparisons, S swaps.
+    int comparisons = 0, swaps = 0;
+    for (int i = 0; i < getSize() - 1; i++) {
+        int smallest = i;
+
+        for (int j = i + 1; j < getSize(); j++) {
+            if (drones.at(j).getID() < drones.at(smallest).getID()) {
+                comparisons++;
+                smallest = j; 
+            }
+        }
+        if (i != smallest) swaps++;
+        std::swap(drones[i], drones[smallest]);
+        std::cout << comparisons << " comparisons, " << swaps << " swaps." << std::endl;
+    }
 }
 
 void Fleet::insertionSortByBattery()
@@ -71,22 +84,45 @@ void Fleet::sortByName()
 
 bool Fleet::isSortedByID() const
 {
-    // TODO
-    return false;
+    for (int i = 0; i < getSize() - 1; i++){
+        if (drones.at(i).getID() > drones.at(i+1).getID()) return false;
+    }
+    return true;
 }
 
 // ---------- Searching ----------
 
 int Fleet::linearSearchByName(const string& name) const
 {
-    // TODO: one comparison per drone checked; print the count; return index or -1
+    int comparisons = 0;
+    for (int i = 0; i < getSize(); i++){
+        if (drones.at(i).getName() == name){
+            std::cout << comparisons << " comparisons." << std::endl;
+            return i;
+        } 
+    }
     return -1;
 }
 
 int Fleet::binarySearchByID(int id)
 {
-    // TODO: sort first if needed (print a message), then binary search.
-    // One comparison per loop iteration. Print the count; return index or -1.
+    int comparisons = 0;
+    if (!isSortedByID){
+        selectionSortByID();
+    }
+    int low = 0;
+    int high = getSize() - 1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        if (drones.at(mid).getID() == id){ 
+            comparisons++;              //one comparison not counted at end of loop when index is found
+            std::cout << comparisons << " comaprisons." << std::endl;
+            return mid;
+        }
+        if (drones.at(mid).getID() < id) low = mid + 1;
+        else high = mid - 1;
+        comparisons++;                  //each time the loop passes, one comparison is made
+    }
     return -1;
 }
 
