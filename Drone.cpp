@@ -157,7 +157,7 @@ double Drone::batteryNeeded(int x, int y, double weight) const
 
 bool Drone::canDeliver(int x, int y, double weight) const
 {
-    if(status == "IDLE" && weight <= maxPayload && battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE)
+    if((status == "IDLE") && (weight <= maxPayload) && (battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE))
     {
         return true;
     }
@@ -187,11 +187,13 @@ void Drone::completeDelivery(int x, int y, double weight)
 
 void Drone::displayDrone() const
 {
-    // TODO: print every member with a label
+    std::cout << "Name: " << name << " | ID:" << ID << " | Model:" << model << " | Battery:" <<  " | Max Payload: " << 
+    maxPayload << " | Position: " << getPosition(0) << ", " << getPosition(1) << " | Status: " << status <<
+    " | Completed Delivery Count: " << deliveriesCompleted << std::endl;
 }
 
 bool Drone::operator==(const Drone& other) const
 {
-    // TODO: two drones are equal if they have the same ID
+    if (ID == other.ID) return true;
     return false;
 }
