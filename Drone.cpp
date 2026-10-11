@@ -16,38 +16,6 @@
 #include "myDouble.h"
 using std::string;
 
-// ------------- String helper methods ----------------------
-char to_upper(unsigned char c)
-{
-    return std::toupper(c);
-}
-
-void to_upper_inplace(char& c)
-{
-    c = to_upper(c);
-}
-
-void make_entire_string_upper(const string& word)
-{
-    std::transform(word.cbegin(), word.cend(), word.begin(), to_upper);
-}
-
-char to_lower(unsigned char c)
-{
-    return std::tolower(c);
-}
-
-void to_lower_inplace(char& c)
-{
-    c = to_lower(c);
-}
-
-void make_entire_string_lower(const string& word)
-{
-    std::transform(word.cbegin(), word.cend(), word.begin(), to_lower);
-}
-
-
 
 // ---------- Constructors ----------
 
@@ -111,7 +79,7 @@ bool Drone::setID(int id)
 {
     if(id > 0)
     {
-        this->ID = id;
+        ID = id;
         return true;
     }
     return false;
@@ -119,11 +87,9 @@ bool Drone::setID(int id)
 
 bool Drone::setModel(string& m)
 {
-    make_entire_string_lower(m);
-    if(m == "kestral" || m == "falcon" || m == "condor")
+    if(m == "Kestral" || m == "Falcon" || m == "Condor")
     {
-        to_upper_inplace(m[0]);
-        this->model = m;
+        model = m;
         return true;
     }
     return false;
@@ -133,7 +99,7 @@ bool Drone::setBattery(double b)
 {
     if(b >= 0 && b <= 100)
     {
-        this->battery = b;
+        battery = b;
         return true;
     }
     return false;
@@ -143,7 +109,7 @@ bool Drone::setMaxPayload(double p)
 {
     if(p > 0)
     {
-        this->maxPayload = p;
+        maxPayload = p;
         return true;
     }
     return false;
@@ -155,7 +121,7 @@ bool Drone::setPosition(int index, int value)
     {
         if(value >= 0)
         {
-            this->position[index] = value;
+            position[index] = value;
             return true;
         }
     }
@@ -164,10 +130,9 @@ bool Drone::setPosition(int index, int value)
 
 bool Drone::setStatus(const string& s)
 {
-    make_entire_string_upper(s);
     if(s == "IDLE" || s == "CHARGING" || s == "MAINTENANCE")
     {
-        this->status = s;
+        status = s;
         return true;
     }
     return false;
