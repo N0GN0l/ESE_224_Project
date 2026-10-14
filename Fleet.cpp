@@ -119,7 +119,10 @@ int Fleet::binarySearchByID(int id)
             std::cout << comparisons << " comaprisons." << std::endl;
             return mid;
         }
-        if (drones.at(mid).getID() < id) low = mid + 1;
+        if (drones.at(mid).getID() < id)
+        {
+            low = mid + 1;  
+        } 
         else high = mid - 1;
         comparisons++;                  //each time the loop passes, one comparison is made
     }
