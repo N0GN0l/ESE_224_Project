@@ -107,7 +107,7 @@ int Fleet::linearSearchByName(const string& name) const
 int Fleet::binarySearchByID(int id)
 {
     int comparisons = 0;
-    if (!isSortedByID){
+    if (!isSortedByID()){
         selectionSortByID();
     }
     int low = 0;
