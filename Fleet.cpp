@@ -96,7 +96,7 @@ int Fleet::linearSearchByName(const string& name) const
 {
     for (int i = 0; i < getSize(); i++){
         if (drones.at(i).getName() == name){
-            std::cout << i+1 << " comparisons." << std::endl;
+            std::cout << i << " comparisons." << std::endl;
             return i;
         }
     }
@@ -109,10 +109,11 @@ int Fleet::binarySearchByID(int id)
     if (!isSortedByID()){
         selectionSortByID();
     }
+
     int low = 0;
     int high = getSize() - 1;
     while (low <= high) {
-        int mid = low + (high - low) / 2;
+        int mid = low + ((high - low) / 2);
         if (drones.at(mid).getID() == id){ 
             comparisons++;              //one comparison not counted at end of loop when index is found
             std::cout << comparisons << " comaprisons." << std::endl;
