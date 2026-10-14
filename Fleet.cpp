@@ -94,12 +94,11 @@ bool Fleet::isSortedByID() const
 
 int Fleet::linearSearchByName(const string& name) const
 {
-    int comparisons = 0;
     for (int i = 0; i < getSize(); i++){
         if (drones.at(i).getName() == name){
-            std::cout << comparisons << " comparisons." << std::endl;
+            std::cout << i+1 << " comparisons." << std::endl;
             return i;
-        } 
+        }
     }
     return -1;
 }
