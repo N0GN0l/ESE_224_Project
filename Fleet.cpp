@@ -39,14 +39,13 @@ bool Fleet::addDrone(const Drone& d)
 {
     // TODO: reject a duplicate ID (use operator==), otherwise add to the end
     for (int i=0; i < drones.size(); i++) {
-        if (binarySearchByID(d.getID()) == -1) { // duplicate id not found
+        if (d == drones.at(i)) { // duplicate id found
+            std::cout << "Drone ID already exists" << std::endl; 
+            return false;
+        } else {
             drones.push_back(d);
             return true;
-        } else {
-            std::cout << "Drone ID already exists"; 
-            return false;
         }
-        i++;
     }
 }
 
