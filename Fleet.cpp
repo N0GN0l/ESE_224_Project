@@ -176,7 +176,7 @@ int Fleet::findNearestAvailable(int x, int y, double weight) const
     closest_available.setID(INT_MAX);
 
     for (int i = 0; i < drones.size(); i++){
-        if (drones.at(i).canDeliver(x, y, weight))
+        if (!(drones.at(i).canDeliver(x, y, weight)))
         {
             continue;
         }
