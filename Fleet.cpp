@@ -7,7 +7,6 @@
 // Remember: no <algorithm>, no std::sort, std::swap, std::find, or std::shuffle.
 
 #include "Fleet.h"
-#include <climits>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -171,49 +170,65 @@ int Fleet::binarySearchByID(int id)
 
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
-    int smallest_index = -1;
-    Drone closest_available(INT_MAX, INT_MAX);
-    closest_available.setID(INT_MAX);
-
+    bool first = true;
+    int small_index = -1;
+    Drone shortest;
     for (int i = 0; i < drones.size(); i++){
-        if (!(drones.at(i).canDeliver(x, y, weight)))
-        {
-            continue;
-        }
-        if (drones.at(i).squaredDistanceTo(x, y) < closest_available.squaredDistanceTo(x, y))
-        {
-            closest_available = drones.at(i);
-            smallest_index = i;
-            continue;
-        }
-        if (drones.at(i).squaredDistanceTo(x, y) == closest_available.squaredDistanceTo(x, y))
-        {
-            if(drones.at(i).getID() < closest_available.getID())
-            {
-                closest_available = drones.at(i);
-                smallest_index = i;
+        if (drones.at(i).canDeliver(x, y, weight)){
+            if(first){
+                shortest = drones.at(i);
+                small_index = i;
             }
-            continue;
+            else{
+                if ((int) drones.at(i).distanceTo(x, y) < (int) shortest.distanceTo(x, y)){
+                    shortest = drones.at(i);
+                    small_index = i;
+                }
+                if ((int) drones.at(i).distanceTo(x, y) == (int) shortest.distanceTo(x, y)){
+                    if(drones.at(i).getID() < shortest.getID()){
+                        shortest = drones.at(i);
+                        small_index = i;
+                    }
+                }
+            }
         }
-    }
-    return smallest_index;
+    }   
+    return small_index;
 }
 
 bool Fleet::dispatchDrone(int index, int x, int y, double weight)
 {
-    // TODO: check index and canDeliver, then completeDelivery
+    if (drones.at(index).canDeliver(x, y, weight)) {
+        drones.at(index).completeDelivery(x, y, weight);
+        return true;
+    }
     return false;
 }
 
 bool Fleet::rechargeDrone(int id)
 {
-    // TODO: battery 100 and IDLE, unless MAINTENANCE; message if not found
+    int index = binarySearchByID(id);
+    if (drones.at(index).getStatus() == "MAINTENANCE, a"){
+        std::cout << "Drone currently in maintenance, cannot charge" << std::endl;
+        return false;
+    } 
+    drones.at(index).setBattery(100);
+    drones.at(index).setStatus("IDLE");
     return false;
 }
 
 void Fleet::countByStatus() const
 {
-    // TODO: counts of IDLE, CHARGING, MAINTENANCE and the average battery
+    int idleCount = 0, chargingCount = 0, maintCount = 0, totalCharge = 0;
+    for (int i = 0; i < drones.size(); i++){
+        if(drones.at(i).getStatus() == "IDLE") idleCount++;
+        if(drones.at(i).getStatus() == "CHARGING") chargingCount++;
+        if(drones.at(i).getStatus() == "MAINTENANCE") maintCount++;
+        totalCharge += drones.at(i).getBattery(); 
+    }
+    std::cout << "Idle Count: " << idleCount << " | Charging count: " << chargingCount 
+    << " | Maintenance Count: " << maintCount << " | Average battery: " 
+    << totalCharge/ (double) drones.size() << std::endl;
 }
 
 void Fleet::processOrders(const string& orderFile, const string& logFile)
