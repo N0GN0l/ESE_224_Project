@@ -56,8 +56,12 @@ bool Fleet::addDrone(const Drone& d)
 Drone Fleet::getDrone(int index) const
 {
     // TODO: check the range; print an error and return Drone() if invalid
-    
-    return Drone();
+    if (!validIndex(index)) {
+        std::cerr << "outside of range" << std::endl;
+        return Drone();
+    } else {
+        return Drone();
+    }
 }
 
 int Fleet::getSize() const
