@@ -35,8 +35,7 @@ Drone::Drone()
     deliveriesCompleted = 0;
 }
 
-Drone::Drone(const string& n, int id, string& m, double b, double p,
-             int x, int y, const string& s) : Drone()
+Drone::Drone(const string& n, int id, string& m, double b, double p, int x, int y, const string& s)
 {
     setName(n);
     setID(id);
@@ -47,6 +46,13 @@ Drone::Drone(const string& n, int id, string& m, double b, double p,
     setPosition(1, y);
     setStatus(s);
 }
+
+Drone::Drone(int x, int y)
+{
+    setPosition(0, x);
+    setPosition(1, y);
+}
+
 
 // ---------- Accessors ----------
 
@@ -146,11 +152,21 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     double distance = 0;
-    myDouble deltaY = (position[1]-y);
+    myDouble deltaY = (position[1] - y);
     myDouble deltaX = (position[0] - x);
     distance = sqrt((deltaX^2) + (deltaY^2));
+    return distance;
+}
+
+long int Drone::squaredDistanceTo(int x, int y) const
+{
+    long int distance = 0;
+    myDouble deltaY = (position[1] - y);
+    myDouble deltaX = (position[0] - x);
+    distance = (deltaX^2) + (deltaY^2);
     return distance;    
 }
+
 
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
