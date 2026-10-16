@@ -7,6 +7,7 @@
 // Remember: no <algorithm>, no std::sort, std::swap, std::find, or std::shuffle.
 
 #include "Fleet.h"
+#include <climits>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -171,25 +172,30 @@ int Fleet::binarySearchByID(int id)
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
     int smallest_index = -1;
-    Drone closest_available ;
+    Drone closest_available(INT_MAX, INT_MAX);
+    closest_available.setID(INT_MAX);
 
     for (int i = 0; i < drones.size(); i++){
-        if (drones.at(i).canDeliver(x, y, weight)){
-            if ((int) drones.at(i).distanceTo(x, y) < (int) closest_available.distanceTo(x, y))
+        if (drones.at(i).canDeliver(x, y, weight))
+        {
+            continue;
+        }
+        if (drones.at(i).squaredDistanceTo(x, y) < closest_available.squaredDistanceTo(x, y))
+        {
+            closest_available = drones.at(i);
+            smallest_index = i;
+            continue;
+        }
+        if (drones.at(i).squaredDistanceTo(x, y) == closest_available.squaredDistanceTo(x, y))
+        {
+            if(drones.at(i).getID() < closest_available.getID())
             {
                 closest_available = drones.at(i);
                 smallest_index = i;
             }
-            if ((int) drones.at(i).distanceTo(x, y) == (int) closest_available.distanceTo(x, y))
-            {
-                if(drones.at(i).getID() < closest_available.getID())
-                {
-                    closest_available = drones.at(i);
-                    smallest_index = i;
-                }
-            }
+            continue;
         }
-    }   
+    }
     return smallest_index;
 }
 

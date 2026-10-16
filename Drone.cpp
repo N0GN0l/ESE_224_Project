@@ -160,7 +160,7 @@ double Drone::distanceTo(int x, int y) const
 
 int Drone::squaredDistanceTo(int x, int y) const
 {
-    int distance = 0;
+    long int distance = 0;
     myDouble deltaY = (position[1] - y);
     myDouble deltaX = (position[0] - x);
     distance = (deltaX^2) + (deltaY^2);
