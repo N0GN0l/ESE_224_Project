@@ -35,8 +35,7 @@ Drone::Drone()
     deliveriesCompleted = 0;
 }
 
-Drone::Drone(const string& n, int id, string& m, double b, double p,
-             int x, int y, const string& s) : Drone()
+Drone::Drone(const string& n, int id, string& m, double b, double p, int x, int y, const string& s)
 {
     setName(n);
     setID(id);
@@ -47,6 +46,13 @@ Drone::Drone(const string& n, int id, string& m, double b, double p,
     setPosition(1, y);
     setStatus(s);
 }
+
+Drone::Drone(int x, int y)
+{
+    setPosition(0, x);
+    setPosition(1, y);
+}
+
 
 // ---------- Accessors ----------
 

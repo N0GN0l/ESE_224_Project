@@ -170,30 +170,27 @@ int Fleet::binarySearchByID(int id)
 
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
-    bool first = true;
-    int small_index = -1;
-    Drone shortest;
+    int smallest_index = -1;
+    Drone closest_available ;
+
     for (int i = 0; i < drones.size(); i++){
         if (drones.at(i).canDeliver(x, y, weight)){
-            if(first){
-                shortest = drones.at(i);
-                small_index = i;
+            if ((int) drones.at(i).distanceTo(x, y) < (int) closest_available.distanceTo(x, y))
+            {
+                closest_available = drones.at(i);
+                smallest_index = i;
             }
-            else{
-                if ((int) drones.at(i).distanceTo(x, y) < (int) shortest.distanceTo(x, y)){
-                    shortest = drones.at(i);
-                    small_index = i;
-                }
-                if ((int) drones.at(i).distanceTo(x, y) == (int) shortest.distanceTo(x, y)){
-                    if(drones.at(i).getID() < shortest.getID()){
-                        shortest = drones.at(i);
-                        small_index = i;
-                    }
+            if ((int) drones.at(i).distanceTo(x, y) == (int) closest_available.distanceTo(x, y))
+            {
+                if(drones.at(i).getID() < closest_available.getID())
+                {
+                    closest_available = drones.at(i);
+                    smallest_index = i;
                 }
             }
         }
     }   
-    return small_index;
+    return smallest_index;
 }
 
 bool Fleet::dispatchDrone(int index, int x, int y, double weight)

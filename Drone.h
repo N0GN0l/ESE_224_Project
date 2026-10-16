@@ -30,6 +30,7 @@ public:
     Drone();
     Drone(const string& n, int id, string& m, double b, double p,
           int x, int y, const string& s);
+    Drone(int x, int y);
 
     // Accessors
     string getName() const;
