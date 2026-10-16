@@ -8,8 +8,10 @@
 #include "Fleet.h"
 #include <iostream>
 #include <fstream>
+#include <ostream>
 #include <string>
 #include <limits>
+#include <vector>
 using std::string;
 using std::endl;
 
@@ -17,6 +19,51 @@ using std::endl;
 //       then greet the user by name.
 void login()
 {
+    struct namePassCombo{
+        string validName;
+        string validPass;
+    };
+    
+    std::vector<namePassCombo> validCombos;
+
+    std::ifstream userIn("users.txt");
+
+    string name;
+    string password;
+    while(userIn>>name>>password)
+    {
+        namePassCombo temp;
+        temp.validName = name;
+        temp.validPass = password;
+        validCombos.push_back(temp); 
+    }
+
+    std::cout<<"Please input your username: ";
+    std::cin>>name;
+    std::cout<<endl<<"Please input your password: ";
+    std::cin>>password;
+    std::cout<<endl;
+
+    bool loggedIn = false;
+
+    for(;;)
+    {
+        for(int i = 0; i < validCombos.size(); i++)
+        {
+            if(name == validCombos.at(i).validName && password == validCombos.at(i).validPass)
+            {
+                std::cout<<"Hello "<<name<<" welcome to SkyDrop"<<endl;
+                loggedIn = true;
+            }
+        }
+        if(loggedIn)
+        {
+            break;
+        }
+        else {
+            std::cout<<"Please input a valid username and password pair"<<endl;
+        }
+    }
 }
 
 // TODO: read every drone from the file until the end of the file,
