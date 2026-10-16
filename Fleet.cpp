@@ -12,6 +12,7 @@
 #include <iomanip>
 using std::string;
 
+//I MADE A COMMENT
 // ---------- Private helpers ----------
 
 // Provided random number generator. Copy exactly; do not change.
@@ -19,7 +20,7 @@ unsigned long long Fleet::nextRandom(unsigned long long &state) const
 {
     state = (state * 1103515245ULL + 12345ULL) % 2147483648ULL;
     return state;
-}
+} 
 
 void Fleet::swapDrones(int i, int j)
 {
@@ -74,12 +75,48 @@ void Fleet::selectionSortByID()
 
 void Fleet::insertionSortByBattery()
 {
-    // TODO: descending by battery. Print: Insertion sort by battery: C comparisons, H shifts.
+    int comparisons = 0, shifts = 0;
+    int N = drones.size();
+    for (int i = 1; i < drones.size() - 1; i++){
+        Drone key = drones.at(i);
+        int j = i - 1;
+        while(j >= 0 && drones.at(j).getBattery() < key.getBattery()){
+            drones.at(j+1) = drones.at(j); 
+            comparisons++;
+            shifts++;
+            j--;
+        }
+        
+     if (j >= 0) {
+        comparisons++;          //avoiding undercounting the last comparison
+    }
+        drones.at(j+1);
+    }
+    std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
+
 }
 
 void Fleet::sortByName()
 {
-    // TODO: insertion sort, alphabetical. Print: Insertion sort by name: C comparisons, H shifts.
+    int comparisons = 0, shifts = 0;
+    int N = drones.size();
+    for (int i = 1; i < drones.size() - 1; i++){
+        Drone key = drones.at(i);
+        int j = i - 1;
+        while(j >= 0 && drones.at(j).getName() > key.getName()){
+            drones.at(j+1) = drones.at(j); 
+            comparisons++;
+            shifts++;
+            j--;
+        }
+        
+     if (j >= 0) {
+        comparisons++;          //avoiding undercounting the last comparison
+    }
+        drones.at(j+1);
+    }
+    std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
+
 }
 
 bool Fleet::isSortedByID() const
@@ -133,8 +170,30 @@ int Fleet::binarySearchByID(int id)
 
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
-    // TODO: closest drone that canDeliver; ties go to the smaller ID; -1 if none
-    return -1;
+    bool first = true;
+    int small_index = -1;
+    Drone shortest;
+    for (int i = 0; i < drones.size(); i++){
+        if (drones.at(i).canDeliver(x, y, weight)){
+            if(first){
+                shortest = drones.at(i);
+                small_index = i;
+            }
+            else{
+                if ((int) drones.at(i).distanceTo(x, y) < (int) shortest.distanceTo(x, y)){
+                    shortest = drones.at(i);
+                    small_index = i;
+                }
+                if ((int) drones.at(i).distanceTo(x, y) == (int) shortest.distanceTo(x, y)){
+                    if(drones.at(i).getID() < shortest.getID()){
+                        shortest = drones.at(i);
+                        small_index = i;
+                    }
+                }
+            }
+        }
+    }   
+    return small_index;
 }
 
 bool Fleet::dispatchDrone(int index, int x, int y, double weight)
