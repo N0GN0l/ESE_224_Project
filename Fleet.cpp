@@ -30,7 +30,11 @@ void Fleet::swapDrones(int i, int j)
 bool Fleet::validIndex(int index) const
 {
     // TODO: true if 0 <= index < number of drones
-    return false;
+    if (index >= 0 && index < drones.size()) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // ---------- Accessors and mutators ----------
@@ -52,6 +56,7 @@ bool Fleet::addDrone(const Drone& d)
 Drone Fleet::getDrone(int index) const
 {
     // TODO: check the range; print an error and return Drone() if invalid
+    
     return Drone();
 }
 
