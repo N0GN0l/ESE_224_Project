@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <vector>
 using std::string;
 
 // ---------- Private helpers ----------
@@ -37,7 +38,16 @@ bool Fleet::validIndex(int index) const
 bool Fleet::addDrone(const Drone& d)
 {
     // TODO: reject a duplicate ID (use operator==), otherwise add to the end
-    return false;
+    for (int i=0; i < drones.size(); i++) {
+        if (binarySearchByID(d.getID()) == -1) { // duplicate id not found
+            drones.push_back(d);
+            return true;
+        } else {
+            std::cout << "Drone ID already exists"; 
+            return false;
+        }
+        i++;
+    }
 }
 
 Drone Fleet::getDrone(int index) const
