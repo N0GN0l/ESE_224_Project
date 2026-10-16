@@ -152,11 +152,21 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     double distance = 0;
-    myDouble deltaY = (position[1]-y);
+    myDouble deltaY = (position[1] - y);
     myDouble deltaX = (position[0] - x);
     distance = sqrt((deltaX^2) + (deltaY^2));
+    return distance;
+}
+
+int Drone::squaredDistanceTo(int x, int y) const
+{
+    int distance = 0;
+    myDouble deltaY = (position[1] - y);
+    myDouble deltaX = (position[0] - x);
+    distance = (deltaX^2) + (deltaY^2);
     return distance;    
 }
+
 
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
