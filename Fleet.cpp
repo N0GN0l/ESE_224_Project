@@ -8,6 +8,7 @@
 
 #include "Fleet.h"
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <iomanip>
 using std::string;
@@ -233,9 +234,39 @@ void Fleet::countByStatus() const
 
 void Fleet::processOrders(const string& orderFile, const string& logFile)
 {
-    // TODO: for each order in file order, find the nearest available drone and dispatch it.
-    // Write one line per order to the screen and the log, then the summary line.
-    // Sum the exact distances; round only when printing.
+    std::ifstream fin(orderFile);
+    std::ofstream fout(logFile);
+    if (!fin || !fout){
+        std::cout << "ERROR OPENNING FILE" << std::endl;
+    }
+    std::string id;
+    int x, y, ordersComp = 0, ordersTotal = 0;
+    double weight, totalDistance;
+
+    fout << std::setprecision(1);
+    std::cout << std::setprecision(1);
+    while (fin >> id >> x >> y >> weight){
+        ordersTotal++;
+        if (findNearestAvailable(x, y, weight) != -1){
+            ordersComp++;
+            int index = findNearestAvailable(x, y, weight);
+            totalDistance += drones.at(index).distanceTo(x,y);
+            double oldBat = drones.at(index).getBattery();
+            dispatchDrone(index, x, y, weight);
+
+            fout << "Order: " << id << ": Drone: " << index << " (" << drones.at(index).getName() << ") distance " 
+            << drones.at(index).distanceTo(x, y) << " battery " << oldBat << " -> " << drones.at(index).getBattery() << std::endl;
+                    
+            std::cout << "Order: " << id << ": Drone: " << index << " (" << drones.at(index).getName() << ") distance " 
+            << drones.at(index).distanceTo(x, y) << " battery " << oldBat << " -> " << drones.at(index).getBattery() << std::endl;
+        }
+        fout << "Order: " << id << ": UNASSIGNED" << std::endl;
+        std::cout << "Order: " << id << ": UNASSIGNED" << std::endl;
+    }
+    fout << "Assigned " << ordersComp << " of " << ordersTotal << ". Total distance flown: " << totalDistance << std::endl;
+    std::cout << "Assigned " << ordersComp << " of " << ordersTotal << ". Total distance flown: " << totalDistance << std::endl;
+
+
 }
 
 // ---------- Other ----------
