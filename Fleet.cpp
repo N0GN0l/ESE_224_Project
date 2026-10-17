@@ -7,6 +7,7 @@
 // Remember: no <algorithm>, no std::sort, std::swap, std::find, or std::shuffle.
 
 #include "Fleet.h"
+#include <climits>
 #include <iostream>
 #include <string>
 #include <fstream>
