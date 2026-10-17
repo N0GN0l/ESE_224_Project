@@ -7,6 +7,7 @@
 // Remember: no <algorithm>, no std::sort, std::swap, std::find, or std::shuffle.
 
 #include "Fleet.h"
+#include <climits>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -26,6 +27,9 @@ unsigned long long Fleet::nextRandom(unsigned long long &state) const
 void Fleet::swapDrones(int i, int j)
 {
     // TODO: exchange drones[i] and drones[j] using a temporary Drone
+    Drone temp = drones.at(i);
+    drones.at(j) = temp;
+
 }
 
 bool Fleet::validIndex(int index) const
@@ -171,30 +175,32 @@ int Fleet::binarySearchByID(int id)
 
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
-    bool first = true;
-    int small_index = -1;
-    Drone shortest;
+    int smallest_index = -1;
+    Drone closest_available(INT_MAX, INT_MAX);
+    closest_available.setID(INT_MAX);
+
     for (int i = 0; i < drones.size(); i++){
-        if (drones.at(i).canDeliver(x, y, weight)){
-            if(first){
-                shortest = drones.at(i);
-                small_index = i;
-            }
-            else{
-                if ((int) drones.at(i).distanceTo(x, y) < (int) shortest.distanceTo(x, y)){
-                    shortest = drones.at(i);
-                    small_index = i;
-                }
-                if ((int) drones.at(i).distanceTo(x, y) == (int) shortest.distanceTo(x, y)){
-                    if(drones.at(i).getID() < shortest.getID()){
-                        shortest = drones.at(i);
-                        small_index = i;
-                    }
-                }
-            }
+        if (!(drones.at(i).canDeliver(x, y, weight)))
+        {
+            continue;
         }
-    }   
-    return small_index;
+        if (drones.at(i).squaredDistanceTo(x, y) < closest_available.squaredDistanceTo(x, y))
+        {
+            closest_available = drones.at(i);
+            smallest_index = i;
+            continue;
+        }
+        if (drones.at(i).squaredDistanceTo(x, y) == closest_available.squaredDistanceTo(x, y))
+        {
+            if(drones.at(i).getID() < closest_available.getID())
+            {
+                closest_available = drones.at(i);
+                smallest_index = i;
+            }
+            continue;
+        }
+    }
+    return smallest_index;
 }
 
 bool Fleet::dispatchDrone(int index, int x, int y, double weight)
