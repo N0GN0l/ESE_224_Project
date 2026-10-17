@@ -7,11 +7,8 @@
 
 
 
-//I MADE A CHANGE
 
-//checking git
 #include "Drone.h"
-#include <algorithm>
 #include <cctype>
 #include <iostream>
 #include <iomanip>
@@ -152,8 +149,8 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     double distance = 0;
-    myDouble deltaY = (position[1] - y);
-    myDouble deltaX = (position[0] - x);
+    myDouble deltaY(position[1] - y);
+    myDouble deltaX(position[0] - x);
     distance = sqrt((deltaX^2) + (deltaY^2));
     return distance;
 }
@@ -161,8 +158,8 @@ double Drone::distanceTo(int x, int y) const
 long int Drone::squaredDistanceTo(int x, int y) const
 {
     long int distance = 0;
-    myDouble deltaY = (position[1] - y);
-    myDouble deltaX = (position[0] - x);
+    myDouble deltaY(position[1] - y);
+    myDouble deltaX(position[0] - x);
     distance = (deltaX^2) + (deltaY^2);
     return distance;    
 }
