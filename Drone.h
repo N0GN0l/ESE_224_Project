@@ -30,6 +30,7 @@ public:
     Drone();
     Drone(const string& n, int id, string& m, double b, double p,
           int x, int y, const string& s);
+    Drone(int x, int y);
 
     // Accessors
     string getName() const;
@@ -52,6 +53,7 @@ public:
 
     // Delivery methods
     double distanceTo(int x, int y) const;
+    long int squaredDistanceTo(int x, int y) const;
     double batteryNeeded(int x, int y, double weight) const;
     bool canDeliver(int x, int y, double weight) const;
     void completeDelivery(int x, int y, double weight);

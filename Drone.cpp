@@ -6,6 +6,9 @@
 // Replace each TODO with your implementation (see Section 3 of the handout)
 
 
+
+//I MADE A CHANGE
+
 //checking git
 #include "Drone.h"
 #include <algorithm>
@@ -15,38 +18,6 @@
 #include <cmath>
 #include "myDouble.h"
 using std::string;
-
-// ------------- String helper methods ----------------------
-char to_upper(unsigned char c)
-{
-    return std::toupper(c);
-}
-
-void to_upper_inplace(char& c)
-{
-    c = to_upper(c);
-}
-
-void make_entire_string_upper(const string& word)
-{
-    std::transform(word.cbegin(), word.cend(), word.begin(), to_upper);
-}
-
-char to_lower(unsigned char c)
-{
-    return std::tolower(c);
-}
-
-void to_lower_inplace(char& c)
-{
-    c = to_lower(c);
-}
-
-void make_entire_string_lower(const string& word)
-{
-    std::transform(word.cbegin(), word.cend(), word.begin(), to_lower);
-}
-
 
 
 // ---------- Constructors ----------
@@ -64,8 +35,7 @@ Drone::Drone()
     deliveriesCompleted = 0;
 }
 
-Drone::Drone(const string& n, int id, string& m, double b, double p,
-             int x, int y, const string& s) : Drone()
+Drone::Drone(const string& n, int id, string& m, double b, double p, int x, int y, const string& s)
 {
     setName(n);
     setID(id);
@@ -76,6 +46,13 @@ Drone::Drone(const string& n, int id, string& m, double b, double p,
     setPosition(1, y);
     setStatus(s);
 }
+
+Drone::Drone(int x, int y)
+{
+    setPosition(0, x);
+    setPosition(1, y);
+}
+
 
 // ---------- Accessors ----------
 
@@ -111,7 +88,7 @@ bool Drone::setID(int id)
 {
     if(id > 0)
     {
-        this->ID = id;
+        ID = id;
         return true;
     }
     return false;
@@ -119,11 +96,9 @@ bool Drone::setID(int id)
 
 bool Drone::setModel(string& m)
 {
-    make_entire_string_lower(m);
-    if(m == "kestral" || m == "falcon" || m == "condor")
+    if(m == "Kestral" || m == "Falcon" || m == "Condor")
     {
-        to_upper_inplace(m[0]);
-        this->model = m;
+        model = m;
         return true;
     }
     return false;
@@ -133,7 +108,7 @@ bool Drone::setBattery(double b)
 {
     if(b >= 0 && b <= 100)
     {
-        this->battery = b;
+        battery = b;
         return true;
     }
     return false;
@@ -143,7 +118,7 @@ bool Drone::setMaxPayload(double p)
 {
     if(p > 0)
     {
-        this->maxPayload = p;
+        maxPayload = p;
         return true;
     }
     return false;
@@ -155,7 +130,7 @@ bool Drone::setPosition(int index, int value)
     {
         if(value >= 0)
         {
-            this->position[index] = value;
+            position[index] = value;
             return true;
         }
     }
@@ -164,10 +139,9 @@ bool Drone::setPosition(int index, int value)
 
 bool Drone::setStatus(const string& s)
 {
-    make_entire_string_upper(s);
     if(s == "IDLE" || s == "CHARGING" || s == "MAINTENANCE")
     {
-        this->status = s;
+        status = s;
         return true;
     }
     return false;
@@ -178,11 +152,21 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     double distance = 0;
-    myDouble deltaY = (position[1]-y);
+    myDouble deltaY = (position[1] - y);
     myDouble deltaX = (position[0] - x);
     distance = sqrt((deltaX^2) + (deltaY^2));
+    return distance;
+}
+
+long int Drone::squaredDistanceTo(int x, int y) const
+{
+    long int distance = 0;
+    myDouble deltaY = (position[1] - y);
+    myDouble deltaX = (position[0] - x);
+    distance = (deltaX^2) + (deltaY^2);
     return distance;    
 }
+
 
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
@@ -192,7 +176,7 @@ double Drone::batteryNeeded(int x, int y, double weight) const
 
 bool Drone::canDeliver(int x, int y, double weight) const
 {
-    if(status == "IDLE" && weight <= maxPayload && battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE)
+    if((status == "IDLE") && (weight <= maxPayload) && (battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE))
     {
         return true;
     }
@@ -222,11 +206,13 @@ void Drone::completeDelivery(int x, int y, double weight)
 
 void Drone::displayDrone() const
 {
-    // TODO: print every member with a label
+    std::cout << "Name: " << name << " | ID:" << ID << " | Model:" << model << " | Battery:" <<  " | Max Payload: " << 
+    maxPayload << " | Position: " << getPosition(0) << ", " << getPosition(1) << " | Status: " << status <<
+    " | Completed Delivery Count: " << deliveriesCompleted << std::endl;
 }
 
 bool Drone::operator==(const Drone& other) const
 {
-    // TODO: two drones are equal if they have the same ID
+    if (ID == other.ID) return true;
     return false;
 }
