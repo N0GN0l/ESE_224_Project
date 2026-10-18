@@ -3,25 +3,22 @@
 
 #include <cmath>
 
-struct myDouble{
-    double value;
-
-    myDouble(double value);
-
-    double operator^(const myDouble& n);
+class myDouble{
+    private:
+        double value;
+    public:
+        myDouble(double value);
     
-    double operator^(double n);
-
-    double operator+(const myDouble& n);
+        double operator^(const myDouble& n);
+        
+        double operator^(double n);
     
-    double operator-(const myDouble& n);
-
-    double operator*(const myDouble& n);
-
-    double operator/(const myDouble& n);
+        double operator+(const myDouble& n);
+        
+        double operator-(const myDouble& n);
     
+        double operator*(const myDouble& n);
+    
+        double operator/(const myDouble& n);
 };
-
-
-
 #endif

@@ -29,6 +29,7 @@ void Fleet::swapDrones(int i, int j)
 {
     // TODO: exchange drones[i] and drones[j] using a temporary Drone
     Drone temp = drones.at(i);
+    drones.at(i)= drones.at(j);
     drones.at(j) = temp;
 
 }
@@ -110,10 +111,10 @@ void Fleet::insertionSortByBattery()
             j--;
         }
         
-     if (j >= 0) {
-        comparisons++;          //avoiding undercounting the last comparison
-    }
-        drones.at(j+1);
+        if (j >= 0) {
+            comparisons++;          //avoiding undercounting the last comparison
+        }
+            drones.at(j+1) = key;
     }
     std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
 
@@ -133,10 +134,10 @@ void Fleet::sortByName()
             j--;
         }
         
-     if (j >= 0) {
-        comparisons++;          //avoiding undercounting the last comparison
-    }
-        drones.at(j+1);
+        if (j >= 0) {
+            comparisons++;          //avoiding undercounting the last comparison
+        }
+            drones.at(j+1) = key;
     }
     std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
 
@@ -299,24 +300,55 @@ void Fleet::shuffleFleet(unsigned long long seed)
 {
     // TODO: Fisher-Yates. state = seed; for i from n-1 down to 1:
     //       j = nextRandom(state) % (i + 1), then swap drones i and j.
-    unsigned long long state = seed;
-    for (int i = getSize() - 1; i > 1; i--) {
-        int j = nextRandom(state) % (i+1);
-
+    int j;
+    int n = getSize();
+    for(int i = (n-1); i > 1; i--)
+    {
+        j = nextRandom(seed) % (i+1);
+        swapDrones(i, j);
     }
 }
 
 void Fleet::displayAll() const
 {
     // TODO: print every drone with its index
+    for(int i = 0; i < getSize(); i++)
+    {
+        displayDrone(i);
+    }
 }
 
 void Fleet::displayDrone(int index) const
 {
     // TODO: check the range, then print one drone
+    if(!(validIndex(index)))
+    {
+        std::cout<<"That is an invalid index"<<std::endl;
+        return;
+    }
+    std::cout<<drones.at(index).getName()
+        <<" drone with ID, " <<drones.at(index).getID()
+        <<" of model: "<<drones.at(index).getModel()
+        <<" has "<<drones.at(index).getBattery()<<" battery"
+        <<" can carry a max payload of: "<<drones.at(index).getMaxPayload()
+        << " is at coordinates: "<<drones.at(index).getPosition(0)<< ","<<drones.at(index).getPosition(1)
+        << " and is currently "<<drones.at(index).getStatus()
+        << ". The has completed "<<drones.at(index).getDeliveriesCompleted()<<" deliveries"
+        << std::endl;
 }
 
 void Fleet::writeFleetToFile(const string& filename) const
 {
     // TODO: same format as drones.txt plus deliveriesCompleted; one decimal for battery and payload
+    std::ofstream fout(filename);    
+    for(int i = 0; i < getSize(); i++)
+    {
+        fout<<drones.at(i).getName()<<" "
+            <<drones.at(i).getID()<<" "
+            <<drones.at(i).getModel()<<" "
+            <<drones.at(i).getBattery()<<" "
+            <<drones.at(i).getMaxPayload()<<" "
+            <<drones.at(i).getPosition(0)<< " " <<drones.at(i).getPosition(1)
+            <<drones.at(i).getStatus()<<std::endl;
+    }
 }
