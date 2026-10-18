@@ -162,12 +162,12 @@ int main()
                 fleet.sortByName();
                 break;
             case 5:
-                std::cout << "Enter seed: " << endl;
+                std::cout << "Enter seed: ";
                 std::cin >> seed;
                 fleet.shuffleFleet(seed);
                 break;
             case 6:
-                std::cout << "Enter name: " << endl;
+                std::cout << "Enter name: ";
                 std::cin >> name;
 
                 idx = fleet.linearSearchByName(name);
