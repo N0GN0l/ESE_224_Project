@@ -49,15 +49,17 @@ bool Fleet::validIndex(int index) const
 bool Fleet::addDrone(const Drone& d)
 {
     // TODO: reject a duplicate ID (use operator==), otherwise add to the end
-    for (int i=0; i < getSize(); i++) {
-        if (d == drones.at(i)) { // duplicate id found
-            std::cout << "Drone ID already exists" << std::endl; 
-            return false;
-        } else {
+    // for (int i=0; i < getSize(); i++) {
+        // if (d.getID() == drones.at(i).getID()) { // duplicate id found
+            // std::cout << "Drone ID already exists" << std::endl; 
+            // return false;
+        // } 
+        // else {
             drones.push_back(d);
             return true;
-        }
-    }
+        // }
+    // }
+    // return false;
 }
 
 Drone Fleet::getDrone(int index) const
@@ -67,7 +69,7 @@ Drone Fleet::getDrone(int index) const
         std::cerr << "outside of range" << std::endl;
         return Drone();
     } else {
-        return Drone();
+        return drones.at(index);
     }
 }
 
@@ -101,7 +103,7 @@ void Fleet::insertionSortByBattery()
 {
     int comparisons = 0, shifts = 0;
     int N = getSize();
-    for (int i = 1; i < getSize() - 1; i++){
+    for (int i = 1; i < getSize(); i++){
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getBattery() < key.getBattery()){
@@ -124,7 +126,7 @@ void Fleet::sortByName()
 {
     int comparisons = 0, shifts = 0;
     int N = getSize();
-    for (int i = 1; i < getSize() - 1; i++){
+    for (int i = 1; i < getSize(); i++){
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getName() > key.getName()){
@@ -185,6 +187,7 @@ int Fleet::binarySearchByID(int id)
             low = mid + 1;  
         } 
         else high = mid - 1;
+        
         comparisons++;                  //each time the loop passes, one comparison is made
     }
     return -1;
@@ -266,7 +269,7 @@ void Fleet::processOrders(const string& orderFile, const string& logFile)
     }
     std::string id;
     int x, y, ordersComp = 0, ordersTotal = 0;
-    double weight, totalDistance;
+    double weight, totalDistance = 0;
 
     fout << std::setprecision(1);
     std::cout << std::setprecision(1);
@@ -326,15 +329,13 @@ void Fleet::displayDrone(int index) const
         std::cout<<"That is an invalid index"<<std::endl;
         return;
     }
-    std::cout<<drones.at(index).getName()
-        <<" drone with ID, " <<drones.at(index).getID()
-        <<" of model: "<<drones.at(index).getModel()
-        <<" has "<<drones.at(index).getBattery()<<" battery"
-        <<" can carry a max payload of: "<<drones.at(index).getMaxPayload()
-        << " is at coordinates: "<<drones.at(index).getPosition(0)<< ","<<drones.at(index).getPosition(1)
-        << " and is currently "<<drones.at(index).getStatus()
-        << ". The has completed "<<drones.at(index).getDeliveriesCompleted()<<" deliveries"
-        << std::endl;
+    std::cout<<drones.at(index).getName()<<" "
+        <<drones.at(index).getID()<<" "
+        <<drones.at(index).getModel()<<" "
+        <<drones.at(index).getBattery()<<" "
+        <<drones.at(index).getMaxPayload()<<" "
+        <<drones.at(index).getPosition(0)<< " " <<drones.at(index).getPosition(1)<<" "
+        <<drones.at(index).getStatus()<<std::endl;
 }
 
 void Fleet::writeFleetToFile(const string& filename) const
@@ -348,7 +349,7 @@ void Fleet::writeFleetToFile(const string& filename) const
             <<drones.at(i).getModel()<<" "
             <<drones.at(i).getBattery()<<" "
             <<drones.at(i).getMaxPayload()<<" "
-            <<drones.at(i).getPosition(0)<< " " <<drones.at(i).getPosition(1)
+            <<drones.at(i).getPosition(0)<< " " <<drones.at(i).getPosition(1)<< " "
             <<drones.at(i).getStatus()<<std::endl;
     }
 }

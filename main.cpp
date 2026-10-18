@@ -62,6 +62,11 @@ void login()
         }
         else {
             std::cout<<"Please input a valid username and password pair"<<endl;
+            std::cout<<"Please input your username: ";
+            std::cin>>name;
+            std::cout<<endl<<"Please input your password: ";
+            std::cin>>password;
+            std::cout<<endl;
         }
     }
 }
@@ -78,16 +83,19 @@ void loadFleet(Fleet& fleet, const string& filename)
     double battery;
     double maxPayload;
     string status;
-    int count;
+    int count = 0;
     std::ifstream fin(filename);
     while(fin>>name>>ID>>model>>battery>>maxPayload>>x>>y>>status)
     {
-        if(fleet.addDrone(Drone(name,ID,model,battery,maxPayload,x,y,status)));
+        // std::cout<<name<<ID<<model<<battery<<maxPayload<<x<<y<<status<<std::endl;
+        Drone temp(name,ID,model,battery,maxPayload,x,y,status);
+        // std::cout<<temp.getName()<<temp.getID()<<temp.getModel()<<temp.getBattery()<<temp.getMaxPayload()<<temp.getPosition(0)<<temp.getPosition(1)<<temp.getStatus()<<std::endl;
+        if(fleet.addDrone(temp))
         {
             count++;
         }
-        std::cout<<count<<" drones were loaded"<<std::endl;
     }
+    std::cout<<count<<" drones were loaded"<<std::endl;
 }
 
 void showMenu()
@@ -113,12 +121,11 @@ void showMenu()
 
 int main()
 {
-    login();
+    // login();
 
     Fleet fleet;
     Drone drone;
     loadFleet(fleet, "drones.txt");
-
     int choice = -1;
     while (choice != 0)
     {
@@ -132,7 +139,7 @@ int main()
         string name;
         int ID;
         string model;
-        int x, y, index;
+        int x, y, index = 0;
         double battery, maxPayload;
         string status;
         int deliveriesCompleted;
@@ -167,7 +174,7 @@ int main()
                 if (idx == -1) {
                     std::cout << "Drone not found";
                 } else {
-                    fleet.getDrone(idx).getName();
+                    fleet.displayDrone(idx);
                 }
 
                 break;
@@ -179,7 +186,7 @@ int main()
                 if (idx == -1) {
                     std::cout << "ID not found";
                 } else {
-                    fleet.getDrone(idx).getID();
+                    fleet.displayDrone(idx);
                 }
 
                 break;

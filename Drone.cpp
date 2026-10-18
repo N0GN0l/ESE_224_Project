@@ -93,7 +93,7 @@ bool Drone::setID(int id)
 
 bool Drone::setModel(string& m)
 {
-    if(m == "Kestral" || m == "Falcon" || m == "Condor")
+    if(m == "Kestrel" || m == "Falcon" || m == "Condor")
     {
         model = m;
         return true;

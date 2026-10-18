@@ -1,0 +1,17 @@
+Spark 113 Condor 72.8 10 2 28 IDLE
+Cinder 751 Condor 64.7 10 20 4 MAINTENANCE
+Skye 452 Falcon 53 5 25 18 IDLE
+Mist 533 Kestrel 41.5 2 3 3 IDLE
+Vapor 731 Falcon 49.8 5 19 28 CHARGING
+Halo 914 Condor 58.9 10 4 9 IDLE
+Comet 635 Condor 79.3 10 0 3 IDLE
+Lark 830 Kestrel 36.8 2 26 1 IDLE
+Onyx 954 Condor 89.6 10 13 7 IDLE
+Breeze 131 Kestrel 52.4 2 6 17 IDLE
+Condor 970 Kestrel 76.4 2 17 25 IDLE
+Blaze 773 Kestrel 75.3 2 6 12 IDLE
+Orbit 718 Condor 35.4 10 18 16 IDLE
+Scout 849 Kestrel 42.5 2 3 4 CHARGING
+Lynx 707 Kestrel 82.4 2 19 0 IDLE
+Raven 444 Falcon 33.4 5 3 20 IDLE
+Shadow 311 Kestrel 84.3 2 29 29 IDLE
