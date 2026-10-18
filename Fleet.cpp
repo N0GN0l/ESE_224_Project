@@ -8,7 +8,6 @@
 
 #include "Fleet.h"
 #include <climits>
-#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -310,15 +309,29 @@ void Fleet::displayDrone(int index) const
         std::cout<<"That is an invalid index"<<std::endl;
         return;
     }
-    std::cout<<drones.at(index).getModel()<<" "<<drones.at(index).getName()
+    std::cout<<drones.at(index).getName()
         <<" drone with ID, " <<drones.at(index).getID()
+        <<" of model: "<<drones.at(index).getModel()
         <<" has "<<drones.at(index).getBattery()<<" battery"
-        << ", has completed "<<drones.at(index).getDeliveriesCompleted()<<" deliveries"
+        <<" can carry a max payload of: "<<drones.at(index).getMaxPayload()
+        << " is at coordinates: "<<drones.at(index).getPosition(0)<< ","<<drones.at(index).getPosition(1)
+        << " and is currently "<<drones.at(index).getStatus()
+        << ". The has completed "<<drones.at(index).getDeliveriesCompleted()<<" deliveries"
         << std::endl;
 }
 
 void Fleet::writeFleetToFile(const string& filename) const
 {
     // TODO: same format as drones.txt plus deliveriesCompleted; one decimal for battery and payload
-
+    std::ofstream fout(filename);    
+    for(int i = 0; i < getSize(); i++)
+    {
+        fout<<drones.at(i).getName()<<" "
+            <<drones.at(i).getID()<<" "
+            <<drones.at(i).getModel()<<" "
+            <<drones.at(i).getBattery()<<" "
+            <<drones.at(i).getMaxPayload()<<" "
+            <<drones.at(i).getPosition(0)<< " " <<drones.at(i).getPosition(1)
+            <<drones.at(i).getStatus()<<std::endl;
+    }
 }
