@@ -7,7 +7,9 @@
 // Remember: no <algorithm>, no std::sort, std::swap, std::find, or std::shuffle.
 
 #include "Fleet.h"
+#include <climits>
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <iomanip>
 using std::string;
@@ -25,6 +27,9 @@ unsigned long long Fleet::nextRandom(unsigned long long &state) const
 void Fleet::swapDrones(int i, int j)
 {
     // TODO: exchange drones[i] and drones[j] using a temporary Drone
+    Drone temp = drones.at(i);
+    drones.at(j) = temp;
+
 }
 
 bool Fleet::validIndex(int index) const
@@ -77,8 +82,7 @@ void Fleet::insertionSortByBattery()
 {
     int comparisons = 0, shifts = 0;
     int N = drones.size();
-    for (int i = 1; i < drones.size() - 1; i++)
-    {
+    for (int i = 1; i < drones.size() - 1; i++){
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getBattery() < key.getBattery()){
@@ -88,10 +92,10 @@ void Fleet::insertionSortByBattery()
             j--;
         }
         
-        if (j >= 0) {
-            comparisons++;          //avoiding undercounting the last comparison
-        }
-        drones.at(j+1) = key;
+     if (j >= 0) {
+        comparisons++;          //avoiding undercounting the last comparison
+    }
+        drones.at(j+1);
     }
     std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
 
@@ -101,8 +105,7 @@ void Fleet::sortByName()
 {
     int comparisons = 0, shifts = 0;
     int N = drones.size();
-    for (int i = 1; i < drones.size() - 1; i++)
-    {
+    for (int i = 1; i < drones.size() - 1; i++){
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getName() > key.getName()){
@@ -112,10 +115,10 @@ void Fleet::sortByName()
             j--;
         }
         
-        if (j >= 0) {
-            comparisons++;          //avoiding undercounting the last comparison
-        }
-        drones.at(j+1) = key;
+     if (j >= 0) {
+        comparisons++;          //avoiding undercounting the last comparison
+    }
+        drones.at(j+1);
     }
     std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
 
@@ -172,30 +175,32 @@ int Fleet::binarySearchByID(int id)
 
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
-    bool first = true;
-    int small_index = -1;
-    Drone shortest;
+    int smallest_index = -1;
+    Drone closest_available(INT_MAX, INT_MAX);
+    closest_available.setID(INT_MAX);
+
     for (int i = 0; i < drones.size(); i++){
-        if (drones.at(i).canDeliver(x, y, weight)){
-            if(first){
-                shortest = drones.at(i);
-                small_index = i;
-            }
-            else{
-                if ((int) drones.at(i).distanceTo(x, y) < (int) shortest.distanceTo(x, y)){
-                    shortest = drones.at(i);
-                    small_index = i;
-                }
-                if ((int) drones.at(i).distanceTo(x, y) == (int) shortest.distanceTo(x, y)){
-                    if(drones.at(i).getID() < shortest.getID()){
-                        shortest = drones.at(i);
-                        small_index = i;
-                    }
-                }
-            }
+        if (!(drones.at(i).canDeliver(x, y, weight)))
+        {
+            continue;
         }
-    }   
-    return small_index;
+        if (drones.at(i).squaredDistanceTo(x, y) < closest_available.squaredDistanceTo(x, y))
+        {
+            closest_available = drones.at(i);
+            smallest_index = i;
+            continue;
+        }
+        if (drones.at(i).squaredDistanceTo(x, y) == closest_available.squaredDistanceTo(x, y))
+        {
+            if(drones.at(i).getID() < closest_available.getID())
+            {
+                closest_available = drones.at(i);
+                smallest_index = i;
+            }
+            continue;
+        }
+    }
+    return smallest_index;
 }
 
 bool Fleet::dispatchDrone(int index, int x, int y, double weight)
@@ -235,9 +240,39 @@ void Fleet::countByStatus() const
 
 void Fleet::processOrders(const string& orderFile, const string& logFile)
 {
-    // TODO: for each order in file order, find the nearest available drone and dispatch it.
-    // Write one line per order to the screen and the log, then the summary line.
-    // Sum the exact distances; round only when printing.
+    std::ifstream fin(orderFile);
+    std::ofstream fout(logFile);
+    if (!fin || !fout){
+        std::cout << "ERROR OPENNING FILE" << std::endl;
+    }
+    std::string id;
+    int x, y, ordersComp = 0, ordersTotal = 0;
+    double weight, totalDistance;
+
+    fout << std::setprecision(1);
+    std::cout << std::setprecision(1);
+    while (fin >> id >> x >> y >> weight){
+        ordersTotal++;
+        if (findNearestAvailable(x, y, weight) != -1){
+            ordersComp++;
+            int index = findNearestAvailable(x, y, weight);
+            totalDistance += drones.at(index).distanceTo(x,y);
+            double oldBat = drones.at(index).getBattery();
+            dispatchDrone(index, x, y, weight);
+
+            fout << "Order: " << id << ": Drone: " << index << " (" << drones.at(index).getName() << ") distance " 
+            << drones.at(index).distanceTo(x, y) << " battery " << oldBat << " -> " << drones.at(index).getBattery() << std::endl;
+                    
+            std::cout << "Order: " << id << ": Drone: " << index << " (" << drones.at(index).getName() << ") distance " 
+            << drones.at(index).distanceTo(x, y) << " battery " << oldBat << " -> " << drones.at(index).getBattery() << std::endl;
+        }
+        fout << "Order: " << id << ": UNASSIGNED" << std::endl;
+        std::cout << "Order: " << id << ": UNASSIGNED" << std::endl;
+    }
+    fout << "Assigned " << ordersComp << " of " << ordersTotal << ". Total distance flown: " << totalDistance << std::endl;
+    std::cout << "Assigned " << ordersComp << " of " << ordersTotal << ". Total distance flown: " << totalDistance << std::endl;
+
+
 }
 
 // ---------- Other ----------
