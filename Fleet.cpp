@@ -26,10 +26,9 @@ unsigned long long Fleet::nextRandom(unsigned long long &state) const
 
 void Fleet::swapDrones(int i, int j)
 {
-    // TODO: exchange drones[i] and drones[j] using a temporary Drone
     Drone temp = drones.at(i);
+    drones.at(i) = drones.at(j);
     drones.at(j) = temp;
-
 }
 
 bool Fleet::validIndex(int index) const
