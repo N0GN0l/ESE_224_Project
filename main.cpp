@@ -121,7 +121,7 @@ void showMenu()
 
 int main()
 {
-    // login();
+    login();
 
     Fleet fleet;
     loadFleet(fleet, "drones.txt");
@@ -132,7 +132,7 @@ int main()
         std::cout << "Choose an option: ";
         std::cin >> choice;
         while (std::cin.fail()) {
-            std::cout << "Error: That is not a valid option. Try again: ";
+            std::cout << "Error: That is not a valid option. Try again: "<<std::endl;
             
             std::cin.clear(); 
             

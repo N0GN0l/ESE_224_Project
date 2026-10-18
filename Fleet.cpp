@@ -9,6 +9,7 @@
 #include "Fleet.h"
 #include <climits>
 #include <iostream>
+#include <ostream>
 #include <string>
 #include <fstream>
 #include <iomanip>
@@ -194,6 +195,7 @@ int Fleet::binarySearchByID(int id)
 
         comparisons++;                  //each time the loop passes, one comparison is made
     }
+    std::cout << "Comparisons: " << comparisons << std::endl;
     return -1;
 }
 
