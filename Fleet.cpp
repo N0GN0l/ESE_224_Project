@@ -185,7 +185,7 @@ int Fleet::binarySearchByID(int id)
         }
         else if (drones.at(mid).getID() < id)
         {
-            low = mid + 1;  
+            low = mid + 1;
         } 
         else 
         {
