@@ -83,7 +83,8 @@ void Fleet::insertionSortByBattery()
 {
     int comparisons = 0, shifts = 0;
     int N = drones.size();
-    for (int i = 1; i < drones.size() - 1; i++){
+    for (int i = 1; i < drones.size() - 1; i++)
+    {
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getBattery() < key.getBattery()){
@@ -93,10 +94,10 @@ void Fleet::insertionSortByBattery()
             j--;
         }
         
-     if (j >= 0) {
-        comparisons++;          //avoiding undercounting the last comparison
-    }
-        drones.at(j+1);
+        if (j >= 0) {
+            comparisons++;          //avoiding undercounting the last comparison
+        }
+            drones.at(j+1) = key;
     }
     std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
 
@@ -106,7 +107,8 @@ void Fleet::sortByName()
 {
     int comparisons = 0, shifts = 0;
     int N = drones.size();
-    for (int i = 1; i < drones.size() - 1; i++){
+    for (int i = 1; i < drones.size() - 1; i++)
+    {
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getName() > key.getName()){
@@ -116,10 +118,10 @@ void Fleet::sortByName()
             j--;
         }
         
-     if (j >= 0) {
-        comparisons++;          //avoiding undercounting the last comparison
-    }
-        drones.at(j+1);
+        if (j >= 0) {
+            comparisons++;          //avoiding undercounting the last comparison
+        }
+            drones.at(j+1) = key;
     }
     std::cout << comparisons << " comparisons, " << shifts << " shifts." << std::endl;
 
