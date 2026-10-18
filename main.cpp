@@ -186,7 +186,7 @@ int main()
 
                 break;
             case 7:
-                std::cout << "Enter ID: " << endl;
+                std::cout << "Enter ID: ";
                 std::cin >> ID;
             
                 idx = fleet.binarySearchByID(ID);
@@ -198,17 +198,17 @@ int main()
 
                 break;
             case 8:
-                std::cout << "Enter x & y in one line: " << endl;
+                std::cout << "Enter x & y in one line: ";
                 std::cin >> x >> y;
-                std::cout << "Enter drone weight: " << endl;
+                std::cout << "Enter drone weight: ";
                 std::cin >> weight;
                 idx = fleet.findNearestAvailable(x, y, weight);
                 fleet.displayDrone(idx);
                 break;
             case 9:
-                std::cout << "Enter x & y in one line: " << endl;
+                std::cout << "Enter x & y in one line: ";
                 std::cin >> x >> y;
-                std::cout << "Enter drone weight: " << endl;
+                std::cout << "Enter drone weight: ";
                 std::cin >> weight; 
                 idx = fleet.findNearestAvailable(x, y, weight);
                 fleet.displayDrone(idx);
@@ -216,7 +216,7 @@ int main()
                 fleet.displayDrone(idx);
                 break;
             case 10:
-                std::cout << "ID of drone to recharge: " << endl;
+                std::cout << "ID of drone to recharge: ";
                 std::cin >> ID;
                 fleet.rechargeDrone(ID);
                 break;
