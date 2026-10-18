@@ -70,6 +70,24 @@ void login()
 //       add each one to the fleet, and print how many were loaded.
 void loadFleet(Fleet& fleet, const string& filename)
 {
+    string name;
+    string model;
+    int ID;
+    int x;
+    int y;
+    double battery;
+    double maxPayload;
+    string status;
+    int count;
+    std::ifstream fin(filename);
+    while(fin>>name>>ID>>model>>battery>>maxPayload>>x>>y>>status)
+    {
+        if(fleet.addDrone(Drone(name,ID,model,battery,maxPayload,x,y,status)));
+        {
+            count++;
+        }
+        std::cout<<count<<" drones were loaded"<<std::endl;
+    }
 }
 
 void showMenu()
