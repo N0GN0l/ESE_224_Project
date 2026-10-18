@@ -98,6 +98,7 @@ int main()
     login();
 
     Fleet fleet;
+    Drone drone;
     loadFleet(fleet, "drones.txt");
 
     int choice = -1;
@@ -109,56 +110,118 @@ int main()
         // TODO: if the user types a letter, cin fails. Recover (cin.clear and
         //       cin.ignore from <limits>) instead of crashing or looping forever.
 
+
+        string name;
+        int ID;
+        string model;
+        int x, y, index;
+        double battery, maxPayload;
+        string status;
+        int deliveriesCompleted;
+
+        int seed;
+        double weight;
+
         switch (choice)
         {
-        case 1:
-            fleet.displayAll();
-            break;
-        case 2:
+            case 1:
+                fleet.displayAll();
+                break;
+            case 2:
+                fleet.selectionSortByID();
+                break;
+            case 3:
+                fleet.insertionSortByBattery();
+                break;
+            case 4:
+                fleet.sortByName();
+                break;
+            case 5:
+                std::cout << "Enter seed: " << endl;
+                std::cin >> seed;
+                fleet.shuffleFleet(seed);
+                break;
+            case 6:
+                std::cout << "Enter name: " << endl;
+                std::cin >> name;
+
+                int idx = fleet.linearSearchByName(name);
+                if (idx == -1) {
+                    std::cout << "Drone not found";
+                } else {
+                    fleet.getDrone(idx).getName();
+                }
+
+                break;
+            case 7:
+                std::cout << "Enter ID: " << endl;
+                std::cin >> ID;
             
-            break;
-        case 3:
-            
-            break;
-        case 4:
-            
-            break;
-        case 5:
-            
-            break;
-        case 6:
-            
-            break;
-        case 7:
-            
-            break;
-        case 8:
-            
-            break;
-        case 9:
-            
-            break;
-        case 10:
-            
-            break;
-        case 11:
-            
-            break;
-        case 12:
-            
-            break;
-        case 13:
-            
-            break;
-        case 14:
-            
-            break;
-        // TODO: cases 2 to 14 (table in Section 5)
-        case 0:
-            std::cout << "Goodbye!" << endl;
-            break;
-        default:
-            std::cout << "Invalid option." << endl;
+                int idx = fleet.binarySearchByID(ID);
+                if (idx == -1) {
+                    std::cout << "ID not found";
+                } else {
+                    fleet.getDrone(idx).getID();
+                }
+
+                break;
+            case 8:
+                std::cout << "Enter x & y in one line: " << endl;
+                std::cin >> x >> y;
+                std::cout << "Enter drone weight: " << endl;
+                std::cin >> weight;
+                fleet.findNearestAvailable(x, y, weight);
+                break;
+            case 9:
+                std::cout << "Enter x & y in one line: " << endl;
+                std::cin >> x >> y;
+                std::cout << "Enter drone weight: " << endl;
+                std::cin >> weight; 
+                fleet.dispatchDrone(index, x, y, weight);
+                break;
+            case 10:
+                std::cout << "ID of drone to recharge: " << endl;
+                std::cin >> ID;
+                break;
+            case 11:
+                fleet.countByStatus();
+                break;
+            case 12:
+                fleet.processOrders("orders.txt", "delivery_log.txt");
+                break;
+            case 13:
+                fleet.writeFleetToFile("fleet_output.txt");
+                break;
+            case 14:
+                std::cout << "Enter new drone's name: ";
+                std::cin >> name;
+                fleet.addDrone(drone);
+                drone.setName(name);
+                
+                std::cout << "Enter with no commas - ID, model, battery, maxPayload, x position, y position, status (all caps): ";
+                std::cin >> ID >> model >> battery >> maxPayload >> x >> y >> status;
+                
+                if (!drone.setID(ID) || !drone.setModel(model) || !drone.setBattery(battery) || !drone.setMaxPayload(maxPayload) || !drone.setPosition(0, x) || !drone.setPosition(1, y) || !drone.setStatus(status)) { // validate
+                    std::cout << "invalid specs" << endl;
+                    // need to delete drone
+                } else {
+                    drone.setID(ID);
+                    drone.setModel(model);
+                    drone.setBattery(battery);
+                    drone.setMaxPayload(maxPayload);
+                    drone.setPosition(0, x);
+                    drone.setPosition(1, y);
+                    drone.setStatus(status);
+
+                }
+
+                break;
+            // TODO: cases 2 to 14 (table in Section 5)
+            case 0:
+                std::cout << "Goodbye!" << endl;
+                break;
+            default:
+                std::cout << "Invalid option." << endl;
         }
     }
     return 0;

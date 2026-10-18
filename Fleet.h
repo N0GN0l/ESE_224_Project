@@ -17,7 +17,7 @@ private:
 
     // Provided random number generator (Section 4.5)
     unsigned long long nextRandom(unsigned long long &state) const;
-
+    
     // Suggested helpers (you may add more private helpers)
     void swapDrones(int i, int j);
     bool validIndex(int index) const;
