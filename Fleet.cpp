@@ -28,6 +28,7 @@ void Fleet::swapDrones(int i, int j)
 {
     // TODO: exchange drones[i] and drones[j] using a temporary Drone
     Drone temp = drones.at(i);
+    drones.at(i)= drones.at(j);
     drones.at(j) = temp;
 
 }
