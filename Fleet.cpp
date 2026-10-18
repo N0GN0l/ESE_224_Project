@@ -8,6 +8,7 @@
 
 #include "Fleet.h"
 #include <climits>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -35,10 +36,6 @@ void Fleet::swapDrones(int i, int j)
 
 bool Fleet::validIndex(int index) const
 {
-    if(0<=index && index < drones.size())
-    {
-        return true;
-    }
     return false;
 }
 
@@ -285,19 +282,41 @@ void Fleet::shuffleFleet(unsigned long long seed)
 {
     // TODO: Fisher-Yates. state = seed; for i from n-1 down to 1:
     //       j = nextRandom(state) % (i + 1), then swap drones i and j.
+    int j;
+    int n = getSize();
+    for(int i = (n-1); i > 1; i--)
+    {
+        j = nextRandom(seed) % (i+1);
+        swapDrones(i, j);
+    }
 }
 
 void Fleet::displayAll() const
 {
     // TODO: print every drone with its index
+    for(int i = 0; i < getSize(); i++)
+    {
+        displayDrone(i);
+    }
 }
 
 void Fleet::displayDrone(int index) const
 {
     // TODO: check the range, then print one drone
+    if(!(validIndex(index)))
+    {
+        std::cout<<"That is an invalid index"<<std::endl;
+        return;
+    }
+    std::cout<<drones.at(index).getModel()<<" "<<drones.at(index).getName()
+        <<" drone with ID, " <<drones.at(index).getID()
+        <<" has "<<drones.at(index).getBattery()<<" battery"
+        << ", has completed "<<drones.at(index).getDeliveriesCompleted()<<" deliveries"
+        << std::endl;
 }
 
 void Fleet::writeFleetToFile(const string& filename) const
 {
     // TODO: same format as drones.txt plus deliveriesCompleted; one decimal for battery and payload
+
 }
