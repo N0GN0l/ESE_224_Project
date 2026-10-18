@@ -163,6 +163,7 @@ int Fleet::linearSearchByName(const string& name) const
             return i;
         }
     }
+    std::cout<<getSize()<<" comparisons"<<std::endl;
     return -1;
 }
 
@@ -182,12 +183,15 @@ int Fleet::binarySearchByID(int id)
             std::cout << comparisons << " comaprisons." << std::endl;
             return mid;
         }
-        if (drones.at(mid).getID() < id)
+        else if (drones.at(mid).getID() < id)
         {
             low = mid + 1;  
         } 
-        else high = mid - 1;
-        
+        else 
+        {
+            high = mid - 1;
+        }
+
         comparisons++;                  //each time the loop passes, one comparison is made
     }
     return -1;
@@ -288,8 +292,10 @@ void Fleet::processOrders(const string& orderFile, const string& logFile)
             std::cout << "Order: " << id << ": Drone: " << index << " (" << drones.at(index).getName() << ") distance " 
             << drones.at(index).distanceTo(x, y) << " battery " << oldBat << " -> " << drones.at(index).getBattery() << std::endl;
         }
-        fout << "Order: " << id << ": UNASSIGNED" << std::endl;
-        std::cout << "Order: " << id << ": UNASSIGNED" << std::endl;
+        else {
+            fout << "Order: " << id << ": UNASSIGNED" << std::endl;
+            std::cout << "Order: " << id << ": UNASSIGNED" << std::endl;
+        }
     }
     fout << "Assigned " << ordersComp << " of " << ordersTotal << ". Total distance flown: " << totalDistance << std::endl;
     std::cout << "Assigned " << ordersComp << " of " << ordersTotal << ". Total distance flown: " << totalDistance << std::endl;

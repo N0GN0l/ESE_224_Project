@@ -51,6 +51,7 @@ Drone::Drone(int x, int y)
 }
 
 
+
 // ---------- Accessors ----------
 
 string Drone::getName() const { return name; }

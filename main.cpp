@@ -124,7 +124,6 @@ int main()
     // login();
 
     Fleet fleet;
-    Drone drone;
     loadFleet(fleet, "drones.txt");
     int choice = -1;
     while (choice != 0)
@@ -132,9 +131,15 @@ int main()
         showMenu();
         std::cout << "Choose an option: ";
         std::cin >> choice;
-        // TODO: if the user types a letter, cin fails. Recover (cin.clear and
-        //       cin.ignore from <limits>) instead of crashing or looping forever.
-
+        while (std::cin.fail()) {
+            std::cout << "Error: That is not a valid option. Try again: ";
+            
+            std::cin.clear(); 
+            
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+            
+            std::cin >> choice;
+        }
 
         string name;
         int ID;
@@ -143,10 +148,12 @@ int main()
         double battery, maxPayload;
         string status;
         int deliveriesCompleted;
-
+        
         int seed;
         double weight;
         int idx;
+
+        Drone drone;
         switch (choice)
         {
             case 1:
@@ -195,18 +202,23 @@ int main()
                 std::cin >> x >> y;
                 std::cout << "Enter drone weight: " << endl;
                 std::cin >> weight;
-                fleet.findNearestAvailable(x, y, weight);
+                idx = fleet.findNearestAvailable(x, y, weight);
+                fleet.displayDrone(idx);
                 break;
             case 9:
                 std::cout << "Enter x & y in one line: " << endl;
                 std::cin >> x >> y;
                 std::cout << "Enter drone weight: " << endl;
                 std::cin >> weight; 
-                fleet.dispatchDrone(index, x, y, weight);
+                idx = fleet.findNearestAvailable(x, y, weight);
+                fleet.displayDrone(idx);
+                idx = fleet.dispatchDrone(index, x, y, weight);
+                fleet.displayDrone(idx);
                 break;
             case 10:
                 std::cout << "ID of drone to recharge: " << endl;
                 std::cin >> ID;
+                fleet.rechargeDrone(ID);
                 break;
             case 11:
                 fleet.countByStatus();
@@ -220,16 +232,12 @@ int main()
             case 14:
                 std::cout << "Enter new drone's name: ";
                 std::cin >> name;
-                fleet.addDrone(drone);
                 drone.setName(name);
                 
                 std::cout << "Enter with no commas - ID, model, battery, maxPayload, x position, y position, status (all caps): ";
                 std::cin >> ID >> model >> battery >> maxPayload >> x >> y >> status;
                 
-                if (!drone.setID(ID) || !drone.setModel(model) || !drone.setBattery(battery) || !drone.setMaxPayload(maxPayload) || !drone.setPosition(0, x) || !drone.setPosition(1, y) || !drone.setStatus(status)) { // validate
-                    std::cout << "invalid specs" << endl;
-                    // need to delete drone
-                } else {
+                if (drone.setID(ID) && drone.setModel(model) && drone.setBattery(battery) && drone.setMaxPayload(maxPayload) && drone.setPosition(0, x) && drone.setPosition(1, y) && drone.setStatus(status)) { // validate
                     drone.setID(ID);
                     drone.setModel(model);
                     drone.setBattery(battery);
@@ -238,8 +246,15 @@ int main()
                     drone.setPosition(1, y);
                     drone.setStatus(status);
 
+                } else {
+                    std::cout << "invalid specs" << endl;
+                    
                 }
+                
+                fleet.addDrone(drone);
                 break;
+
+
             case 0:
                 std::cout << "Goodbye!" << endl;
                 break;
