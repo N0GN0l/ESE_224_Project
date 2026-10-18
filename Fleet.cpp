@@ -12,6 +12,7 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <vector>
 using std::string;
 
 //I MADE A COMMENT
@@ -35,7 +36,12 @@ void Fleet::swapDrones(int i, int j)
 
 bool Fleet::validIndex(int index) const
 {
-    return false;
+    // TODO: true if 0 <= index < number of drones
+    if (index >= 0 && index < getSize()) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // ---------- Accessors and mutators ----------
@@ -43,13 +49,26 @@ bool Fleet::validIndex(int index) const
 bool Fleet::addDrone(const Drone& d)
 {
     // TODO: reject a duplicate ID (use operator==), otherwise add to the end
-    return false;
+    for (int i=0; i < getSize(); i++) {
+        if (d == drones.at(i)) { // duplicate id found
+            std::cout << "Drone ID already exists" << std::endl; 
+            return false;
+        } else {
+            drones.push_back(d);
+            return true;
+        }
+    }
 }
 
 Drone Fleet::getDrone(int index) const
 {
     // TODO: check the range; print an error and return Drone() if invalid
-    return Drone();
+    if (!validIndex(index)) {
+        std::cerr << "outside of range" << std::endl;
+        return Drone();
+    } else {
+        return Drone();
+    }
 }
 
 int Fleet::getSize() const
@@ -81,9 +100,8 @@ void Fleet::selectionSortByID()
 void Fleet::insertionSortByBattery()
 {
     int comparisons = 0, shifts = 0;
-    int N = drones.size();
-    for (int i = 1; i < drones.size() - 1; i++)
-    {
+    int N = getSize();
+    for (int i = 1; i < getSize() - 1; i++){
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getBattery() < key.getBattery()){
@@ -105,9 +123,8 @@ void Fleet::insertionSortByBattery()
 void Fleet::sortByName()
 {
     int comparisons = 0, shifts = 0;
-    int N = drones.size();
-    for (int i = 1; i < drones.size() - 1; i++)
-    {
+    int N = getSize();
+    for (int i = 1; i < getSize() - 1; i++){
         Drone key = drones.at(i);
         int j = i - 1;
         while(j >= 0 && drones.at(j).getName() > key.getName()){
@@ -181,7 +198,7 @@ int Fleet::findNearestAvailable(int x, int y, double weight) const
     Drone closest_available(INT_MAX, INT_MAX);
     closest_available.setID(INT_MAX);
 
-    for (int i = 0; i < drones.size(); i++){
+    for (int i = 0; i < getSize(); i++){
         if (!(drones.at(i).canDeliver(x, y, weight)))
         {
             continue;
@@ -229,7 +246,7 @@ bool Fleet::rechargeDrone(int id)
 void Fleet::countByStatus() const
 {
     int idleCount = 0, chargingCount = 0, maintCount = 0, totalCharge = 0;
-    for (int i = 0; i < drones.size(); i++){
+    for (int i = 0; i < getSize(); i++){
         if(drones.at(i).getStatus() == "IDLE") idleCount++;
         if(drones.at(i).getStatus() == "CHARGING") chargingCount++;
         if(drones.at(i).getStatus() == "MAINTENANCE") maintCount++;
@@ -237,7 +254,7 @@ void Fleet::countByStatus() const
     }
     std::cout << "Idle Count: " << idleCount << " | Charging count: " << chargingCount 
     << " | Maintenance Count: " << maintCount << " | Average battery: " 
-    << totalCharge/ (double) drones.size() << std::endl;
+    << totalCharge/ (double) getSize() << std::endl;
 }
 
 void Fleet::processOrders(const string& orderFile, const string& logFile)
