@@ -35,7 +35,10 @@ void Fleet::swapDrones(int i, int j)
 
 bool Fleet::validIndex(int index) const
 {
-    // TODO: true if 0 <= index < number of drones
+    if(0<=index && index < drones.size())
+    {
+        return true;
+    }
     return false;
 }
 
