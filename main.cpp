@@ -121,7 +121,7 @@ int main()
 
         int seed;
         double weight;
-
+        int idx;
         switch (choice)
         {
             case 1:
@@ -145,7 +145,7 @@ int main()
                 std::cout << "Enter name: " << endl;
                 std::cin >> name;
 
-                int idx = fleet.linearSearchByName(name);
+                idx = fleet.linearSearchByName(name);
                 if (idx == -1) {
                     std::cout << "Drone not found";
                 } else {
@@ -157,7 +157,7 @@ int main()
                 std::cout << "Enter ID: " << endl;
                 std::cin >> ID;
             
-                int idx = fleet.binarySearchByID(ID);
+                idx = fleet.binarySearchByID(ID);
                 if (idx == -1) {
                     std::cout << "ID not found";
                 } else {
@@ -214,9 +214,7 @@ int main()
                     drone.setStatus(status);
 
                 }
-
                 break;
-            // TODO: cases 2 to 14 (table in Section 5)
             case 0:
                 std::cout << "Goodbye!" << endl;
                 break;
