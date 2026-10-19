@@ -19,6 +19,7 @@ using std::string;
 
 // ---------- Constructors ----------
 
+//default drone: no name, invalid ID, full battery, at the origin
 Drone::Drone()
 {
     name = "";
@@ -32,6 +33,7 @@ Drone::Drone()
     deliveriesCompleted = 0;
 }
 
+//full constructor, goes through the setters so every value gets validated
 Drone::Drone(const string& n, int id, string& m, double b, double p, int x, int y, const string& s)
 {
     setName(n);
@@ -44,6 +46,7 @@ Drone::Drone(const string& n, int id, string& m, double b, double p, int x, int 
     setStatus(s);
 }
 
+//position-only constructor (used as the "far away" placeholder in findNearestAvailable)
 Drone::Drone(int x, int y)
 {
     setPosition(0, x);
@@ -54,6 +57,7 @@ Drone::Drone(int x, int y)
 
 // ---------- Accessors ----------
 
+//simple getters that just return each field
 string Drone::getName() const { return name; }
 int Drone::getID() const { return ID; }
 string Drone::getModel() const { return model; }
@@ -62,6 +66,7 @@ double Drone::getMaxPayload() const { return maxPayload; }
 string Drone::getStatus() const { return status; }
 int Drone::getDeliveriesCompleted() const { return deliveriesCompleted; }
 
+//index 0 is x, index 1 is y, anything else returns -1
 int Drone::getPosition(int index) const
 {
     if(index == 0)
@@ -77,11 +82,13 @@ int Drone::getPosition(int index) const
 
 // ---------- Mutators ----------
 
+//any name is allowed, so no check needed
 void Drone::setName(const string& n)
 {
     name = n;
 }
 
+//ID must be positive
 bool Drone::setID(int id)
 {
     if(id > 0)
@@ -92,6 +99,7 @@ bool Drone::setID(int id)
     return false;
 }
 
+//only the three known models are accepted
 bool Drone::setModel(string& m)
 {
     if(m == "Kestrel" || m == "Falcon" || m == "Condor")
@@ -102,6 +110,7 @@ bool Drone::setModel(string& m)
     return false;
 }
 
+//battery is a percentage, so it has to stay between 0 and 100
 bool Drone::setBattery(double b)
 {
     if(b >= 0 && b <= 100)
@@ -112,6 +121,7 @@ bool Drone::setBattery(double b)
     return false;
 }
 
+//payload capacity has to be positive
 bool Drone::setMaxPayload(double p)
 {
     if(p > 0)
@@ -122,6 +132,7 @@ bool Drone::setMaxPayload(double p)
     return false;
 }
 
+//index picks x or y, and coordinates can't be negative
 bool Drone::setPosition(int index, int value)
 {
     if(index == 0 || index == 1)
@@ -135,6 +146,7 @@ bool Drone::setPosition(int index, int value)
     return false;
 }
 
+//status has to be one of the three valid states
 bool Drone::setStatus(const string& s)
 {
     if(s == "IDLE" || s == "CHARGING" || s == "MAINTENANCE")
@@ -147,31 +159,36 @@ bool Drone::setStatus(const string& s)
 
 // ---------- Delivery methods ----------
 
+//straight-line distance using the pythagorean theorem
 double Drone::distanceTo(int x, int y) const
 {
     double distance = 0;
+    //myDouble wraps the differences so ^2 means squaring
     myDouble deltaY(position[1] - y);
     myDouble deltaX(position[0] - x);
     distance = sqrt((deltaX^2) + (deltaY^2));
     return distance;
 }
 
+//same as distanceTo but skips the sqrt, good for comparing distances exactly
 long int Drone::squaredDistanceTo(int x, int y) const
 {
     long int distance = 0;
     myDouble deltaY(position[1] - y);
     myDouble deltaX(position[0] - x);
     distance = (deltaX^2) + (deltaY^2);
-    return distance;    
+    return distance;
 }
 
 
+//battery cost grows with distance and with how heavy the package is
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
     double batteryNeeded = distanceTo(x, y) * BATTERY_PER_UNIT *(1 + PAYLOAD_FACTOR * weight);
     return batteryNeeded;
 }
 
+//a drone can deliver if it's idle, can lift the weight, and keeps the safety reserve after the trip
 bool Drone::canDeliver(int x, int y, double weight) const
 {
     if((status == "IDLE") && (weight <= maxPayload) && (battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE))
@@ -183,12 +200,16 @@ bool Drone::canDeliver(int x, int y, double weight) const
 
 void Drone::completeDelivery(int x, int y, double weight)
 {
+    //double-check the delivery is still possible
     if(canDeliver(x, y, weight))
     {
+        //use up battery, move to the destination, and count the delivery
         battery -= batteryNeeded(x, y, weight);
         position[0] = x;
         position[1] = y;
         deliveriesCompleted++;
+
+        //send it to charge if the battery got too low
         if(battery < LOW_BATTERY)
         {
             setStatus("CHARGING");
@@ -202,13 +223,15 @@ void Drone::completeDelivery(int x, int y, double weight)
 
 // ---------- Display and comparison ----------
 
+//print every field on one line
 void Drone::displayDrone() const
 {
-    std::cout << "Name: " << name << " | ID:" << ID << " | Model:" << model << " | Battery:" <<  " | Max Payload: " << 
+    std::cout << "Name: " << name << " | ID:" << ID << " | Model:" << model << " | Battery:" <<  " | Max Payload: " <<
     maxPayload << " | Position: " << getPosition(0) << ", " << getPosition(1) << " | Status: " << status <<
     " | Completed Delivery Count: " << deliveriesCompleted << std::endl;
 }
 
+//two drones are the same if they share an ID
 bool Drone::operator==(const Drone& other) const
 {
     if (ID == other.ID) return true;

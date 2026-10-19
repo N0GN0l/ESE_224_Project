@@ -19,6 +19,7 @@ using std::endl;
 //       then greet the user by name.
 void login()
 {
+    //holds one valid username/password pair
     struct namePassCombo{
         string validName;
         string validPass;
@@ -28,6 +29,7 @@ void login()
 
     std::ifstream userIn("users.txt");
 
+    //read every username/password pair from the file
     string name;
     string password;
     while(userIn>>name>>password)
@@ -38,15 +40,19 @@ void login()
         validCombos.push_back(temp); 
     }
 
+    //first login attempt
     std::cout<<"Please input your username: ";
     std::cin>>name;
-    std::cout<<"Please input your password: ";
+    std::cout<<endl<<"Please input your password: ";
     std::cin>>password;
-    
+    std::cout<<endl;
+
     bool loggedIn = false;
-    
+
+    //keep prompting until a matching pair is entered
     for(;;)
     {
+        //check the entered pair against every valid combo
         for(int i = 0; i < validCombos.size(); i++)
         {
             if(name == validCombos.at(i).validName && password == validCombos.at(i).validPass)
@@ -60,11 +66,11 @@ void login()
             break;
         }
         else {
+            //no match, ask again
             std::cout<<"Please input a valid username and password pair"<<endl;
-            std::cout<<endl;
             std::cout<<"Please input your username: ";
             std::cin>>name;
-            std::cout<<"Please input your password: ";
+            std::cout<<endl<<"Please input your password: ";
             std::cin>>password;
             std::cout<<endl;
         }
@@ -75,6 +81,7 @@ void login()
 //       add each one to the fleet, and print how many were loaded.
 void loadFleet(Fleet& fleet, const string& filename)
 {
+    //temporary fields for each drone read from the file
     string name;
     string model;
     int ID;
@@ -85,11 +92,15 @@ void loadFleet(Fleet& fleet, const string& filename)
     string status;
     int count = 0;
     std::ifstream fin(filename);
+
+    //read one drone per line until end of file
     while(fin>>name>>ID>>model>>battery>>maxPayload>>x>>y>>status)
     {
         // std::cout<<name<<ID<<model<<battery<<maxPayload<<x<<y<<status<<std::endl;
         Drone temp(name,ID,model,battery,maxPayload,x,y,status);
         // std::cout<<temp.getName()<<temp.getID()<<temp.getModel()<<temp.getBattery()<<temp.getMaxPayload()<<temp.getPosition(0)<<temp.getPosition(1)<<temp.getStatus()<<std::endl;
+
+        //only count drones the fleet actually accepted
         if(fleet.addDrone(temp))
         {
             count++;
@@ -98,6 +109,7 @@ void loadFleet(Fleet& fleet, const string& filename)
     std::cout<<count<<" drones were loaded"<<std::endl;
 }
 
+//prints the main menu options
 void showMenu()
 {
     std::cout << endl
@@ -121,18 +133,23 @@ void showMenu()
 
 int main()
 {
-    login();
+    // login();
 
+    //build the fleet from the drone data file
     Fleet fleet;
     loadFleet(fleet, "drones.txt");
+
+    //main menu loop, runs until the user picks 0
     int choice = -1;
     while (choice != 0)
     {
         showMenu();
         std::cout << "Choose an option: ";
         std::cin >> choice;
+
+        //recover from non-numeric input and ask again
         while (std::cin.fail()) {
-            std::cout << "Error: That is not a valid option. Try again: "<<std::endl;
+            std::cout << "Error: That is not a valid option. Try again: ";
             
             std::cin.clear(); 
             
@@ -141,6 +158,7 @@ int main()
             std::cin >> choice;
         }
 
+        //variables shared across the menu options
         string name;
         int ID;
         string model;
@@ -154,11 +172,15 @@ int main()
         int idx;
 
         Drone drone;
+
+        //run the selected option
         switch (choice)
         {
             case 1:
                 fleet.displayAll();
                 break;
+
+            //sorting options
             case 2:
                 fleet.selectionSortByID();
                 break;
@@ -168,11 +190,15 @@ int main()
             case 4:
                 fleet.sortByName();
                 break;
+
+            //shuffle with a user-given seed so results are repeatable
             case 5:
                 std::cout << "Enter seed: ";
                 std::cin >> seed;
                 fleet.shuffleFleet(seed);
                 break;
+
+            //search by name, -1 means not found
             case 6:
                 std::cout << "Enter name: ";
                 std::cin >> name;
@@ -185,6 +211,8 @@ int main()
                 }
 
                 break;
+
+            //binary search by ID (fleet should be sorted by ID first)
             case 7:
                 std::cout << "Enter ID: ";
                 std::cin >> ID;
@@ -197,14 +225,25 @@ int main()
                 }
 
                 break;
+
+            //find the closest drone that can carry the given weight
             case 8:
                 std::cout << "Enter x & y in one line: ";
                 std::cin >> x >> y;
                 std::cout << "Enter drone weight: ";
                 std::cin >> weight;
                 idx = fleet.findNearestAvailable(x, y, weight);
-                fleet.displayDrone(idx);
+                if(idx == -1)
+                {
+                    std::cout<<"No drone can be found to complete this delivery"<<std::endl;
+                }
+                else
+                {
+                    fleet.displayDrone(idx);
+                }
                 break;
+
+            //find the nearest drone, then send it on the delivery
             case 9:
                 std::cout << "Enter x & y in one line: ";
                 std::cin >> x >> y;
@@ -212,14 +251,18 @@ int main()
                 std::cin >> weight; 
                 idx = fleet.findNearestAvailable(x, y, weight);
                 fleet.displayDrone(idx);
-                fleet.dispatchDrone(idx, x, y, weight);
+                idx = fleet.dispatchDrone(index, x, y, weight);
                 fleet.displayDrone(idx);
                 break;
+
+            //recharge a drone by its ID
             case 10:
                 std::cout << "ID of drone to recharge: ";
                 std::cin >> ID;
                 fleet.rechargeDrone(ID);
                 break;
+
+            //summary, batch orders, and file output
             case 11:
                 fleet.countByStatus();
                 break;
@@ -229,6 +272,8 @@ int main()
             case 13:
                 fleet.writeFleetToFile("fleet_output.txt");
                 break;
+
+            //build a new drone from user input
             case 14:
                 std::cout << "Enter new drone's name: ";
                 std::cin >> name;
@@ -237,20 +282,22 @@ int main()
                 std::cout << "Enter with no commas - ID, model, battery, maxPayload, x position, y position, status (all caps): ";
                 std::cin >> ID >> model >> battery >> maxPayload >> x >> y >> status;
                 
+                //setters return false on bad values, so this checks every field
                 if (drone.setID(ID) && drone.setModel(model) && drone.setBattery(battery) && drone.setMaxPayload(maxPayload) && drone.setPosition(0, x) && drone.setPosition(1, y) && drone.setStatus(status)) { // validate
                     drone.setID(ID);
-                    
                     drone.setModel(model);
                     drone.setBattery(battery);
                     drone.setMaxPayload(maxPayload);
                     drone.setPosition(0, x);
                     drone.setPosition(1, y);
                     drone.setStatus(status);
-                    
-                    fleet.addDrone(drone);
+
                 } else {
                     std::cout << "invalid specs" << endl;
+                    
                 }
+                
+                fleet.addDrone(drone);
                 break;
 
 
