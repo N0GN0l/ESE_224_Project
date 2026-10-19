@@ -50,17 +50,15 @@ bool Fleet::validIndex(int index) const
 bool Fleet::addDrone(const Drone& d)
 {
     // TODO: reject a duplicate ID (use operator==), otherwise add to the end
-    // for (int i=0; i < getSize(); i++) {
-        // if (d.getID() == drones.at(i).getID()) { // duplicate id found
-            // std::cout << "Drone ID already exists" << std::endl; 
-            // return false;
-        // } 
-        // else {
-            drones.push_back(d);
-            return true;
-        // }
-    // }
-    // return false;
+    for (int i=0; i < getSize(); i++) {
+        if (d.getID() == drones.at(i).getID()) { // duplicate id found
+            std::cout << "Drone ID already exists" << std::endl; 
+            return false;
+        } 
+
+    }
+    drones.push_back(d);
+    return true;
 }
 
 Drone Fleet::getDrone(int index) const
@@ -181,7 +179,7 @@ int Fleet::binarySearchByID(int id)
         int mid = low + ((high - low) / 2);
         if (drones.at(mid).getID() == id){ 
             comparisons++;              //one comparison not counted at end of loop when index is found
-            std::cout << comparisons << " comaprisons." << std::endl;
+            std::cout << comparisons << " comparisons." << std::endl;
             return mid;
         }
         else if (drones.at(mid).getID() < id)

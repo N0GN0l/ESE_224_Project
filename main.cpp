@@ -40,12 +40,11 @@ void login()
 
     std::cout<<"Please input your username: ";
     std::cin>>name;
-    std::cout<<endl<<"Please input your password: ";
+    std::cout<<"Please input your password: ";
     std::cin>>password;
-    std::cout<<endl;
-
+    
     bool loggedIn = false;
-
+    
     for(;;)
     {
         for(int i = 0; i < validCombos.size(); i++)
@@ -62,9 +61,10 @@ void login()
         }
         else {
             std::cout<<"Please input a valid username and password pair"<<endl;
+            std::cout<<endl;
             std::cout<<"Please input your username: ";
             std::cin>>name;
-            std::cout<<endl<<"Please input your password: ";
+            std::cout<<"Please input your password: ";
             std::cin>>password;
             std::cout<<endl;
         }
@@ -212,7 +212,7 @@ int main()
                 std::cin >> weight; 
                 idx = fleet.findNearestAvailable(x, y, weight);
                 fleet.displayDrone(idx);
-                idx = fleet.dispatchDrone(index, x, y, weight);
+                fleet.dispatchDrone(idx, x, y, weight);
                 fleet.displayDrone(idx);
                 break;
             case 10:
@@ -239,19 +239,18 @@ int main()
                 
                 if (drone.setID(ID) && drone.setModel(model) && drone.setBattery(battery) && drone.setMaxPayload(maxPayload) && drone.setPosition(0, x) && drone.setPosition(1, y) && drone.setStatus(status)) { // validate
                     drone.setID(ID);
+                    
                     drone.setModel(model);
                     drone.setBattery(battery);
                     drone.setMaxPayload(maxPayload);
                     drone.setPosition(0, x);
                     drone.setPosition(1, y);
                     drone.setStatus(status);
-
+                    
+                    fleet.addDrone(drone);
                 } else {
                     std::cout << "invalid specs" << endl;
-                    
                 }
-                
-                fleet.addDrone(drone);
                 break;
 
 
